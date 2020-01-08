@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-declare -r BINARY_NAME="bremen-trash"
+declare -r BINARY_NAME="bremen_trash"
 
 # CGO_ENABLED=0   -> Disable interoperate with C libraries -> speed up build time! Enable it, if dependencies use C libraries!
 # GOOS=linux      -> compile to linux because scratch docker file is linux
