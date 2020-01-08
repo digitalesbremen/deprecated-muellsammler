@@ -20,9 +20,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	content = strings.ReplaceAll(content, "<img", "<img name=\"dummy\"")
+
 	fmt.Println(content)
 
 	decoder := xml.NewDecoder(strings.NewReader(content))
+	decoder.Strict = false
+	decoder.AutoClose = xml.HTMLAutoClose
+	decoder.Entity = xml.HTMLEntity
+	decoder.AutoClose = append(decoder.AutoClose, "img")
+
 	for {
 		token, tokenErr := decoder.Token()
 		if tokenErr != nil {
@@ -30,6 +37,8 @@ func main() {
 				fmt.Println("EOF")
 				break
 			}
+			fmt.Println(tokenErr)
+			break
 			// handle error
 		}
 
