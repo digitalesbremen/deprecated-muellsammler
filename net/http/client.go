@@ -28,6 +28,6 @@ func GetContent(url string) (content string, err error) {
 
 		return string(body), nil
 	} else {
-		return "", fmt.Errorf("Response code is '%s'", resp.Status)
+		return "", fmt.Errorf("response code is '%s'", resp.Status)
 	}
 }
