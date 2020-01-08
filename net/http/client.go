@@ -2,6 +2,7 @@ package http
 
 import (
 	"fmt"
+	"golang.org/x/text/encoding/charmap"
 	"io/ioutil"
 	"net/http"
 )
@@ -20,7 +21,9 @@ func GetContent(url string) (content string, err error) {
 	fmt.Println(resp.StatusCode)
 
 	if resp.StatusCode == http.StatusOK {
-		body, err := ioutil.ReadAll(resp.Body)
+		reader := charmap.Windows1252.NewDecoder().Reader(resp.Body)
+
+		body, err := ioutil.ReadAll(reader)
 
 		if err != nil {
 			return "", err

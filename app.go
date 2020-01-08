@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	root = "http://213.168.213.236/bremereb/bify/index.jsp"
+	root = "http://213.168.213.236/bremereb/bify/strasse.jsp?strasse=L"
 )
 
 func main() {
@@ -20,7 +20,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	content = strings.ReplaceAll(content, "<img", "<img name=\"dummy\"")
+	//content = strings.ReplaceAll(content, "width=60%", "width=\"60%\"")
+	content = strings.ReplaceAll(content, "%", "")
+	content = strings.ReplaceAll(content, "<br>", "")
+	content = strings.ReplaceAll(content, "</br>", "")
+	content = strings.ReplaceAll(content, ".jsp?", "")
+	content = strings.ReplaceAll(content, "strasse=", "")
 
 	fmt.Println(content)
 
