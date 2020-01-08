@@ -7,7 +7,7 @@ import (
 )
 
 func GetContent(url string) (content string, err error) {
-	fmt.Println("Request url `%s`", url)
+	fmt.Printf("Request url `%s`", url)
 
 	resp, err := http.Get(url)
 
