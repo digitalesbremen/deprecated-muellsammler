@@ -24,9 +24,10 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 
 * Golang 1.13
 
-### Project bauen
+### Project bauen und starten
 
 ```ssh
 $ git clone https://github.com/larmic/bremen_abfall_kalender
 $ go build
+$ ./bremen_trash
 ```
