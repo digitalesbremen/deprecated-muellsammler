@@ -10,10 +10,22 @@ welche Tonnen diese Woche raus müssen, muss ich mich mühseelig durch `http://2
 Ich habe bisher wenig Erfahrung mit der Sprache Golang machen dürfen. Ich versuche hier etwas zu entwickeln, was mir jede 
 Woche direkt sagen kann, welche Tonnen heute an die Straße müssen
 
-## Hinweis
+#### Hinweis
 
 Das Projekt ist in einem sehr frühen Stadium und noch in Arbeit. 
 
-## Anforderungen
+## Projekt
+
+Dieses Projekt ist in Golang geschrieben und dient zunächst als reines
+Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen.
+
+### Anforderungen
 
 * Golang 1.13
+
+### Project bauen
+
+```ssh
+$ git clone https://github.com/larmic/bremen_abfall_kalender
+$ go build
+```
