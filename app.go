@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bremen_trash/net/http/get"
+	"bremen_trash/net/http"
 	"fmt"
 	"log"
 )
@@ -11,9 +11,7 @@ var (
 )
 
 func main() {
-	fmt.Println("Hello golang!")
-
-	content, err := get.GetContent(root)
+	content, err := http.GetContent(root)
 
 	if err != nil {
 		log.Fatal(err)
