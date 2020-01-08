@@ -6,7 +6,7 @@
 ## Hintergrund
 
 Mich stört es jede Woche, dass ich vergessen habe, welche Tonnen ich letzte Woche an die Straße gestellt habe. Um zu Wissen,
-welche Tonnen diese Woche raus müssen, muss ich mich mühseelig durch `http://213.168.213.236/bremereb/bify/index.jsp` klicken.
+welche Tonnen diese Woche raus müssen, muss ich mich mühselig durch `http://213.168.213.236/bremereb/bify/index.jsp` klicken.
 
 Ich habe bisher wenig Erfahrung mit der Sprache Golang machen dürfen. Ich versuche hier etwas zu entwickeln, was mir jede 
 Woche direkt sagen kann, welche Tonnen heute an die Straße müssen
