@@ -2,6 +2,7 @@ package main
 
 import (
 	"bremen_trash/net/http"
+	xml2 "bremen_trash/xml"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -10,7 +11,7 @@ import (
 )
 
 var (
-	root = "http://213.168.213.236/bremereb/bify/strasse.jsp?strasse=L"
+	root = "http://213.168.213.236/bremereb/bify/index.jsp"
 )
 
 func main() {
@@ -21,12 +22,13 @@ func main() {
 	}
 
 	//content = strings.ReplaceAll(content, "width=60%", "width=\"60%\"")
-	content = strings.ReplaceAll(content, "%", "")
-	content = strings.ReplaceAll(content, "<br>", "")
-	content = strings.ReplaceAll(content, "</br>", "")
-	content = strings.ReplaceAll(content, ".jsp?", "")
-	content = strings.ReplaceAll(content, "strasse=", "")
+	//content = strings.ReplaceAll(content, "%", "")
+	//content = strings.ReplaceAll(content, "<br>", "")
+	//content = strings.ReplaceAll(content, "</br>", "")
+	//content = strings.ReplaceAll(content, ".jsp?", "")
+	//content = strings.ReplaceAll(content, "strasse=", "")
 
+	content = xml2.RepairInvalidHtml(content)
 	fmt.Println(content)
 
 	decoder := xml.NewDecoder(strings.NewReader(content))
