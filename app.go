@@ -21,15 +21,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//content = strings.ReplaceAll(content, "width=60%", "width=\"60%\"")
-	//content = strings.ReplaceAll(content, "%", "")
-	//content = strings.ReplaceAll(content, "<br>", "")
-	//content = strings.ReplaceAll(content, "</br>", "")
-	//content = strings.ReplaceAll(content, ".jsp?", "")
-	//content = strings.ReplaceAll(content, "strasse=", "")
-
 	content = xml2.RepairInvalidHtml(content)
 	fmt.Println(content)
+
+	content = strings.ReplaceAll(content, "<br>", "")
+	content = strings.ReplaceAll(content, "</br>", "")
 
 	decoder := xml.NewDecoder(strings.NewReader(content))
 	decoder.Strict = false
@@ -46,7 +42,6 @@ func main() {
 			}
 			fmt.Println(tokenErr)
 			break
-			// handle error
 		}
 
 		switch t := token.(type) {

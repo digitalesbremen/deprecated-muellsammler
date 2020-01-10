@@ -1,11 +1,17 @@
 package xml
 
-import "regexp"
+import (
+	"regexp"
+)
 
 var (
-	regex = regexp.MustCompile(`\s([a-zA-Z]+)=([\w.+%?\-=]+)`)
+	// A bit of hacking
+	// -> missingQuotesRegex cannot handle content="text/html; charset=ISO-8859-1"
+	// -> so replace it by removing white space within double quotes content="text/html;charset=ISO-8859-1"
+	metaTagContentRegex = regexp.MustCompile(`(="[\w.+%?\-/;=]+)(;\s)([\w.+%?\-/;=]+")`)
+	missingQuotesRegex  = regexp.MustCompile(`\s([a-zA-Z]+)=([\w.+%?\-=]+)`)
 )
 
 func RepairInvalidHtml(html string) string {
-	return regex.ReplaceAllString(html, ` $1="$2"`)
+	return missingQuotesRegex.ReplaceAllString(metaTagContentRegex.ReplaceAllString(html, "$1;$3"), ` $1="$2"`)
 }
