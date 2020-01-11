@@ -9,11 +9,12 @@ Mich stört es jede Woche, dass ich vergessen habe, welche Tonnen ich letzte Woc
 welche Tonnen diese Woche raus müssen, muss ich mich mühselig durch `http://213.168.213.236/bremereb/bify/index.jsp` klicken.
 
 Ich habe bisher wenig Erfahrung mit der Sprache Golang machen dürfen. Ich versuche hier etwas zu entwickeln, was mir jede 
-Woche direkt sagen kann, welche Tonnen heute an die Straße müssen
+Woche direkt sagen kann, welche Tonnen heute an die Straße können.
 
 #### Hinweis
 
-Das Projekt ist in einem sehr frühen Stadium und noch in Arbeit. 
+Das Projekt ist in einem frühen Stadium und noch in Arbeit. Je nach Zeit passiert hier etwas. Ich habe von Golang wenig 
+Ahnung und freie mich daher über jede Art von Feedback. 
 
 ## Projekt
 
