@@ -6,13 +6,15 @@ import (
 	"container/list"
 	"encoding/xml"
 	"fmt"
+	"html"
 	"io"
 	"log"
 	"strings"
 )
 
 var (
-	root = "http://213.168.213.236/bremereb/bify/index.jsp"
+	bremerStadtreinigungRootUrl  = "http://213.168.213.236/bremereb/bify/"
+	bremerStadtreinigungIndexUrl = bremerStadtreinigungRootUrl + "index.jsp"
 )
 
 type Td struct {
@@ -32,7 +34,7 @@ type FirstLetter struct {
 }
 
 func main() {
-	content, err := http.GetContent(root)
+	content, err := http.GetContent(bremerStadtreinigungIndexUrl)
 
 	if err != nil {
 		log.Fatal(err)
@@ -72,7 +74,7 @@ func main() {
 				}
 
 				if td.A != nil && td.A.Href != "" && td.A.Value != "" {
-					firstLetters.PushBack(FirstLetter{td.A.Value, td.A.Href})
+					firstLetters.PushBack(FirstLetter{html.UnescapeString(td.A.Value), bremerStadtreinigungRootUrl + td.A.Href})
 				}
 			}
 		case xml.EndElement:
