@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bremen_trash/demo"
 	"bremen_trash/net/http"
 	xml2 "bremen_trash/xml"
 	"encoding/xml"
@@ -15,9 +14,12 @@ var (
 	root = "http://213.168.213.236/bremereb/bify/index.jsp"
 )
 
+type Td struct {
+	A A `xml:"a"`
+}
+
 type A struct {
-	Href string `xml:"href"`
-	Demo string `xml:"href"`
+	Href string `xml:"href,attr"`
 }
 
 func main() {
@@ -37,11 +39,6 @@ func main() {
 	decoder.Strict = false
 	decoder.AutoClose = xml.HTMLAutoClose
 
-	kanjidic := demo.ParseKanjiDic2()
-	fmt.Println(kanjidic)
-
-	var a A
-
 	for {
 		token, tokenErr := decoder.Token()
 		if tokenErr != nil {
@@ -56,6 +53,7 @@ func main() {
 		switch startElement := token.(type) {
 		case xml.StartElement:
 			if matchesAddressLink(startElement) {
+				var a A
 				err = decoder.DecodeElement(&a, &startElement)
 				fmt.Println(err)
 				fmt.Println("href", a.Href)
