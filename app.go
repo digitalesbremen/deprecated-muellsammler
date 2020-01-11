@@ -1,13 +1,10 @@
 package main
 
 import (
+	"bremen_trash/html/bremen/stadtreinigung"
+	"bremen_trash/html/repair"
 	"bremen_trash/net/http"
-	xml2 "bremen_trash/xml"
-	"container/list"
-	"encoding/xml"
 	"fmt"
-	"html"
-	"io"
 	"log"
 	"strings"
 )
@@ -17,22 +14,6 @@ var (
 	bremerStadtreinigungIndexUrl = bremerStadtreinigungRootUrl + "index.jsp"
 )
 
-type Td struct {
-	A       *A     `xml:"a"`
-	Class   string `xml:"class,attr"`
-	OnClick string `xml:"onClick,attr"`
-}
-
-type A struct {
-	Href  string `xml:"href,attr"`
-	Value string `xml:",innerxml"`
-}
-
-type FirstLetter struct {
-	FirstLetter string
-	Url         string
-}
-
 func main() {
 	content, err := http.GetContent(bremerStadtreinigungIndexUrl)
 
@@ -40,62 +21,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	content = xml2.RepairInvalidHtml(content)
+	content = repair.RepairInvalidHtml(content)
 
+	// Hack: Don't now why but parsing </br> does not work.
 	content = strings.ReplaceAll(content, "<br>", "")
 	content = strings.ReplaceAll(content, "</br>", "")
 
-	decoder := xml.NewDecoder(strings.NewReader(content))
-	decoder.Strict = false
-	decoder.AutoClose = xml.HTMLAutoClose
+	firstLetters := stadtreinigung.ParseIndexPage(content, bremerStadtreinigungRootUrl)
 
-	firstLetters := list.New()
-
-	for {
-		token, tokenErr := decoder.Token()
-		if tokenErr != nil {
-			if tokenErr == io.EOF {
-				fmt.Println("EOF")
-				break
-			}
-			fmt.Println(tokenErr)
-			break
-		}
-
-		switch startElement := token.(type) {
-		case xml.StartElement:
-			if matchesTd(startElement) {
-				var td Td
-				err = decoder.DecodeElement(&td, &startElement)
-
-				if err != nil {
-					fmt.Printf("Unable to decode tag %s, Tag skipped", startElement.Name.Local)
-					continue
-				}
-
-				if td.A != nil && td.A.Href != "" && td.A.Value != "" {
-					firstLetters.PushBack(FirstLetter{html.UnescapeString(td.A.Value), bremerStadtreinigungRootUrl + td.A.Href})
-				}
-			}
-		case xml.EndElement:
-			continue
-			//fmt.Println("End: ", t.Name)
-		}
+	for _, element := range firstLetters {
+		fmt.Println(element)
 	}
-
-	for e := firstLetters.Front(); e != nil; e = e.Next() {
-		fmt.Println(e.Value)
-	}
-}
-
-func matchesTd(startElement xml.StartElement) bool {
-	if startElement.Name.Local == `td` {
-		for _, attribute := range startElement.Attr {
-			if attribute.Name.Local == `class` && attribute.Value == `BAKChr` {
-				return true
-			}
-		}
-	}
-
-	return false
 }
