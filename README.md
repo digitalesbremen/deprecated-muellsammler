@@ -24,6 +24,7 @@ Hier eine kleine Berichterstattung meiner Herausforderungen bzw. gemachten Erfah
 * Golang grundsätzlich verstehen
 * Feststellen, dass der [Abfallkalender der Bremer Stadtreinigung](http://213.168.213.236/bremereb/bify/index.jsp) kein valides HTML liefert
 * Feststellen, dass der [Abfallkalender der Bremer Stadtreinigung](http://213.168.213.236/bremereb/bify/index.jsp) statt UTF-8 in Windows-1252 codiert ist
+* Pointer spielen in golang wieder eine Rolle
 
 ## Projekt
 
