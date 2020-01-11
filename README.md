@@ -6,15 +6,16 @@
 ## Hintergrund
 
 Mich stört es jede Woche, dass ich vergessen habe, welche Tonnen ich letzte Woche an die Straße gestellt habe. Um zu Wissen,
-welche Tonnen diese Woche raus müssen, muss ich mich mühselig durch `http://213.168.213.236/bremereb/bify/index.jsp` klicken.
+welche Tonnen diese Woche raus müssen, muss ich mich mühselig durch den [Abfallkalender der Bremer Stadtreinigung](http://213.168.213.236/bremereb/bify/index.jsp) 
+klicken.
 
 Ich habe bisher wenig Erfahrung mit der Sprache Golang machen dürfen. Ich versuche hier etwas zu entwickeln, was mir jede 
 Woche direkt sagen kann, welche Tonnen heute an die Straße können.
 
 #### Hinweis
 
-Das Projekt ist in einem frühen Stadium und noch in Arbeit. Je nach Zeit passiert hier etwas. Ich habe von Golang wenig 
-Ahnung und freie mich daher über jede Art von Feedback. 
+Das Projekt ist in einem frühen Stadium und noch in Arbeit. Je nach meiner freien Zeit passiert hier etwas. Ich habe 
+von Golang wenig Ahnung und freue mich daher über jede Art von Feedback. 
 
 #### Meine Herausforderungen
 
@@ -28,6 +29,11 @@ Hier eine kleine Berichterstattung meiner Herausforderungen bzw. gemachten Erfah
 
 Dieses Projekt ist in Golang geschrieben und dient zunächst als reines
 Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen.
+
+### Stand
+
+Die Indexseite der Stadtreinigung wird beim Start der Anwendung automatisiert eingelesen und eine Liste aller
+Anfangsbuchstaben der Straßennamen und der dahinterliegenden URL wird in die Konsole geloggt.
 
 ### Anforderungen
 
