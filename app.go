@@ -15,11 +15,14 @@ var (
 )
 
 type Td struct {
-	A A `xml:"a"`
+	A       A      `xml:"a"`
+	Class   string `xml:"class,attr"`
+	OnClick string `xml:"onClick,attr"`
 }
 
 type A struct {
 	Href string `xml:"href,attr"`
+	A    string `xml:",innerxml"`
 }
 
 func main() {
@@ -52,11 +55,11 @@ func main() {
 
 		switch startElement := token.(type) {
 		case xml.StartElement:
-			if matchesAddressLink(startElement) {
-				var a A
-				err = decoder.DecodeElement(&a, &startElement)
+			if matchesTd(startElement) {
+				var td Td
+				err = decoder.DecodeElement(&td, &startElement)
 				fmt.Println(err)
-				fmt.Println("href", a.Href)
+				fmt.Println("a", td.A)
 				fmt.Println("Start: ", startElement.Name.Local, startElement.Attr)
 			}
 		case xml.EndElement:
@@ -66,10 +69,10 @@ func main() {
 	}
 }
 
-func matchesAddressLink(startElement xml.StartElement) bool {
-	if startElement.Name.Local == `a` {
+func matchesTd(startElement xml.StartElement) bool {
+	if startElement.Name.Local == `td` {
 		for _, attribute := range startElement.Attr {
-			if attribute.Name.Local == `href` && strings.Contains(attribute.Value, `strasse.jsp?strasse=`) {
+			if attribute.Name.Local == `class` && attribute.Value == `BAKChr` {
 				return true
 			}
 		}
