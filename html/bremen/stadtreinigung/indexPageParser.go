@@ -44,7 +44,7 @@ func ParseIndexPage(indexPage string, bremerStadtreinigungRootUrl string) []Firs
 
 		switch startElement := token.(type) {
 		case xml.StartElement:
-			if matchesTd(startElement) {
+			if matches(startElement) {
 				var td Td
 				err := decoder.DecodeElement(&td, &startElement)
 
@@ -53,20 +53,25 @@ func ParseIndexPage(indexPage string, bremerStadtreinigungRootUrl string) []Firs
 					continue
 				}
 
-				if td.A != nil && td.A.Href != "" && td.A.Value != "" {
-					firstLetters = append(firstLetters, FirstLetter{html.UnescapeString(td.A.Value), bremerStadtreinigungRootUrl + td.A.Href})
+				if td.matches() {
+					firstLetters = append(firstLetters, td.mapToFirstLetter(bremerStadtreinigungRootUrl))
 				}
 			}
-		case xml.EndElement:
-			continue
-			//fmt.Println("End: ", t.Name)
 		}
 	}
 
 	return firstLetters
 }
 
-func matchesTd(startElement xml.StartElement) bool {
+func (td Td) mapToFirstLetter(bremerStadtreinigungRootUrl string) FirstLetter {
+	return FirstLetter{html.UnescapeString(td.A.Value), bremerStadtreinigungRootUrl + td.A.Href}
+}
+
+func (td Td) matches() bool {
+	return td.A != nil && td.A.Href != "" && td.A.Value != ""
+}
+
+func matches(startElement xml.StartElement) bool {
 	if startElement.Name.Local == `td` {
 		for _, attribute := range startElement.Attr {
 			if attribute.Name.Local == `class` && attribute.Value == `BAKChr` {
