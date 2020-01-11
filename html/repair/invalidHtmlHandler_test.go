@@ -18,10 +18,10 @@ var (
 func TestAddMissingDoubleQuoteIfNecessary(t *testing.T) {
 	for index, row := range dataSets {
 		input := row[0]
-		output := row[1]
+		want := row[1]
 		got := RepairInvalidHtml(input)
-		if got != output {
-			t.Errorf(`Dataset: %d: RepairInvalidHtml(%s) = %s; want %s`, index, input, got, output)
+		if got != want {
+			t.Errorf(`Dataset: %d: RepairInvalidHtml(%s) = %s; want %s`, index, input, got, want)
 		}
 	}
 }
