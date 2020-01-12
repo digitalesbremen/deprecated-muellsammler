@@ -38,8 +38,10 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 
 ### Stand
 
-* Die Indexseite wird geparsed und alle Anfangsbuchstaben aller Straßen werden im Log ausgegeben.
-* Zu jedem Anfangsbuchstaben werden alle Straßen geladen und um Log ausgegeben.
+* Die Indexseite wird geparsed und alle Anfangsbuchstaben aller Straßen werden geladen.
+* Zu jedem Anfangsbuchstaben werden alle Straßen geladen.
+* Zu jeder Straße werden alle Hausnummern geladen.
+* Eine Progressbar im Log gibt den Ladezustand an. Zur Zeit werden ungefährt 130.000 Request in 2m43s durchgeführt
 
 ### Anforderungen
 

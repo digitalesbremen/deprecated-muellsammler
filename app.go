@@ -19,14 +19,13 @@ func main() {
 	bar := progressbar.New(130000)
 
 	firstLetters := loadFirstLetterOfStreets()
-	requests := 1
-
 	streets := loadStreets(firstLetters, bar)
-	requests = requests + len(streets)
+
+	requests := 1 + len(streets)
 
 	for _, street := range streets {
 		bar.Add(1)
-		//fmt.Println(`Found street`, street.Name, street.Url)
+
 		content, err := http.GetContent(street.Url)
 		content = repair.RepairInvalidHtml(content)
 
@@ -41,7 +40,6 @@ func main() {
 		houseNumbers := stadtreinigung.ParseHouseNumber(content, bremerStadtreinigungRootUrl)
 
 		requests = requests + len(houseNumbers)
-
 		bar.Add(len(houseNumbers))
 	}
 
