@@ -8,7 +8,7 @@ import (
 )
 
 func GetContent(url string) (content string, err error) {
-	fmt.Printf("Request url `%s`\n", url)
+	//fmt.Printf("Request url `%s`\n", url)
 
 	resp, err := http.Get(url)
 
@@ -18,7 +18,7 @@ func GetContent(url string) (content string, err error) {
 
 	defer resp.Body.Close()
 
-	fmt.Println(resp.StatusCode)
+	//fmt.Println(resp.StatusCode)
 
 	if resp.StatusCode == http.StatusOK {
 		reader := charmap.Windows1252.NewDecoder().Reader(resp.Body)

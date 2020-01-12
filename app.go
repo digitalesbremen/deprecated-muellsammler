@@ -29,7 +29,28 @@ func main() {
 
 	firstLetters := stadtreinigung.ParseIndexPage(content, bremerStadtreinigungRootUrl)
 
-	for _, element := range firstLetters {
-		fmt.Println(element)
+	streets := make([]stadtreinigung.Street, 0)
+
+	for _, firstLetter := range firstLetters {
+		content, err := http.GetContent(firstLetter.Url)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		firstLetterStreets, err := stadtreinigung.ParseStreetPage(content, firstLetter)
+
+		if err != nil {
+			fmt.Printf(`Error while parsing streets of %s. Error is %s. Url will be ignored.`, firstLetter.Url, err)
+		}
+
+		for _, element := range firstLetterStreets {
+			streets = append(streets, element)
+		}
+	}
+
+	for _, street := range streets {
+		fmt.Println(`Street name`, street.Name)
+		fmt.Println(`Street url`, street.Url)
 	}
 }
