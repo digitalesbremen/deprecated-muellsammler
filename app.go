@@ -35,12 +35,13 @@ func main() {
 		fmt.Println(`Found first letter of street`, firstLetter.FirstLetter, firstLetter.Url)
 
 		content, err := http.GetContent(firstLetter.Url)
+		content = repair.RepairInvalidHtml(content)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		firstLetterStreets, err := stadtreinigung.ParseStreetPage(content, firstLetter)
+		firstLetterStreets, err := stadtreinigung.ParseStreetPage(content, firstLetter, bremerStadtreinigungRootUrl)
 
 		if err != nil {
 			fmt.Printf(`Error while parsing streets of %s. Error is '%s'. Url will be ignored.`, firstLetter.Url, err)

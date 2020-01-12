@@ -24,10 +24,10 @@ type A struct {
 	Value string `xml:",innerxml"`
 }
 
-func ParseIndexPage(indexPage string, bremerStadtreinigungRootUrl string) []FirstLetter {
+func ParseIndexPage(content string, bremerStadtreinigungRootUrl string) []FirstLetter {
 	firstLetters := make([]FirstLetter, 0, 40)
 
-	decoder := xml.NewDecoder(strings.NewReader(indexPage))
+	decoder := xml.NewDecoder(strings.NewReader(content))
 	decoder.Strict = false
 	decoder.AutoClose = xml.HTMLAutoClose
 
@@ -43,7 +43,7 @@ func ParseIndexPage(indexPage string, bremerStadtreinigungRootUrl string) []Firs
 
 		switch startElement := token.(type) {
 		case xml.StartElement:
-			if matches(startElement) {
+			if matchesFirstLetterOfStreet(startElement) {
 				var td Td
 				err := decoder.DecodeElement(&td, &startElement)
 
@@ -70,7 +70,7 @@ func (td Td) matches() bool {
 	return td.A != nil && td.A.Href != "" && td.A.Value != ""
 }
 
-func matches(startElement xml.StartElement) bool {
+func matchesFirstLetterOfStreet(startElement xml.StartElement) bool {
 	if startElement.Name.Local == `td` {
 		for _, attribute := range startElement.Attr {
 			if attribute.Name.Local == `class` && attribute.Value == `BAKChr` {
