@@ -29,7 +29,7 @@ Hier eine kleine Berichterstattung meiner Herausforderungen bzw. gemachten Erfah
 * Feststellen, dass die Endung der URL `/strasse.jsp?strasse=...` einerseits alle Straßen mit einem gewissen Anfangsbuchstaben anzeigt, aber auch (sofern es nur eine
 Straße mit diesem Anfangsbuchstaben gibt, nur die Hausnummern der Straße). Zudem gibt es `http://213.168.213.236/bremereb/bify/hausnummer.jsp?strasse=...` 
 um Hausnummern anzuzeigen. Verwirrend und schwierig. 
-* Regex macht mehr Spaß als ich immer gedacht habe.
+* Ich muss mich in Regex immer erst wieder einarbeiten. Dann macht es aber Spaß.
 * Golang kann auch Funktionen als Übergabeparameter.
 
 ## Projekt
