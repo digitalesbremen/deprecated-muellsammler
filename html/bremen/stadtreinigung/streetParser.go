@@ -59,7 +59,6 @@ func ParseStreetPage(content string, firstLetter FirstLetter, bremerStadtreinigu
 				}
 			}
 		}
-
 	}
 
 	return streets, err

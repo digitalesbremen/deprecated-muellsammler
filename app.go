@@ -15,20 +15,15 @@ var (
 )
 
 func main() {
-	content, err := http.GetContent(bremerStadtreinigungIndexUrl)
+	firstLetters := loadFirstLetterOfStreets()
+	streets := loadStreets(firstLetters)
 
-	if err != nil {
-		log.Fatal(err)
+	for _, street := range streets {
+		fmt.Println(`Found street`, street.Name, street.Url)
 	}
+}
 
-	content = repair.RepairInvalidHtml(content)
-
-	// Hack: Don't now why but parsing </br> does not work.
-	content = strings.ReplaceAll(content, "<br>", "")
-	content = strings.ReplaceAll(content, "</br>", "")
-
-	firstLetters := stadtreinigung.ParseIndexPage(content, bremerStadtreinigungRootUrl)
-
+func loadStreets(firstLetters []stadtreinigung.FirstLetter) []stadtreinigung.Street {
 	streets := make([]stadtreinigung.Street, 0)
 
 	for _, firstLetter := range firstLetters {
@@ -52,8 +47,22 @@ func main() {
 			streets = append(streets, element)
 		}
 	}
+	return streets
+}
 
-	for _, street := range streets {
-		fmt.Println(`Found street`, street.Name, street.Url)
+func loadFirstLetterOfStreets() []stadtreinigung.FirstLetter {
+	content, err := http.GetContent(bremerStadtreinigungIndexUrl)
+
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	content = repair.RepairInvalidHtml(content)
+
+	// Hack: Don't now why but parsing </br> does not work.
+	content = strings.ReplaceAll(content, "<br>", "")
+	content = strings.ReplaceAll(content, "</br>", "")
+
+	firstLetters := stadtreinigung.ParseIndexPage(content, bremerStadtreinigungRootUrl)
+	return firstLetters
 }
