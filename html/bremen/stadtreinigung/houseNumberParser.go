@@ -52,7 +52,10 @@ func ParseHouseNumber(content string, bremerStadtreinigungRootUrl string) []Hous
 }
 
 func (td Td) mapToHouseNumber(bremerStadtreinigungRootUrl string) HouseNumber {
-	return HouseNumber{html.UnescapeString(td.A.Value), bremerStadtreinigungRootUrl + td.A.Href}
+	url := bremerStadtreinigungRootUrl + td.A.Href
+	url = strings.ReplaceAll(url, ` `, `%20`)
+	url = strings.ReplaceAll(url, `ß`, `%DF`)
+	return HouseNumber{html.UnescapeString(td.A.Value), url}
 }
 
 func matchesHouseNumber(startElement xml.StartElement) bool {

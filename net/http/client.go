@@ -5,15 +5,29 @@ import (
 	"golang.org/x/text/encoding/charmap"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 func GetContent(url string) (content string, err error) {
 	//fmt.Printf("Request url `%s`\n", url)
 
-	resp, err := http.Get(url)
+	//time.Sleep(10 * time.Millisecond)
+	client := http.Client{
+		Timeout: 1 * time.Second,
+	}
+	resp, err := client.Get(url)
 
 	if err != nil {
-		return "", err
+		fmt.Println()
+		fmt.Printf(`Timeout while loading '%s'. Retry in 10 seconds.`, url)
+		fmt.Println()
+		time.Sleep(10 * time.Second)
+
+		resp, err = client.Get(url)
+
+		if err != nil {
+			return "", err
+		}
 	}
 
 	defer resp.Body.Close()
@@ -31,6 +45,6 @@ func GetContent(url string) (content string, err error) {
 
 		return string(body), nil
 	} else {
-		return "", fmt.Errorf("response code is '%s'", resp.Status)
+		return "", fmt.Errorf("Try to load `%s`. Response code is '%s'", url, resp.Status)
 	}
 }

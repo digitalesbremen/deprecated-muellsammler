@@ -16,16 +16,28 @@ var (
 )
 
 func main() {
-	bar := progressbar.New(130000)
-
+	// Load first letters
+	fmt.Println("Loading street first letters")
 	firstLetters := loadFirstLetterOfStreets()
+	fmt.Printf("%d street first letters loaded", len(firstLetters))
+	fmt.Println()
+	fmt.Println()
+
+	// Load streets
+	fmt.Println("Loading streets")
+	bar := progressbar.NewOptions(3700, progressbar.OptionSetRenderBlankState(true))
 	streets := loadStreets(firstLetters, bar)
+	bar.Finish()
+	fmt.Println()
+	fmt.Printf("%d streets loaded", len(streets))
+	fmt.Println()
+	fmt.Println()
 
-	requests := 1 + len(streets)
-
+	fmt.Println("Loading house numbers")
+	numberOfHouseNumbers := 0
+	bar = progressbar.NewOptions(len(streets), progressbar.OptionSetRenderBlankState(true))
+	// load house numbers for all streets
 	for _, street := range streets {
-		bar.Add(1)
-
 		content, err := http.GetContent(street.Url)
 		content = repair.RepairInvalidHtml(content)
 
@@ -38,13 +50,37 @@ func main() {
 		}
 
 		houseNumbers := stadtreinigung.ParseHouseNumber(content, bremerStadtreinigungRootUrl)
+		numberOfHouseNumbers = numberOfHouseNumbers + len(houseNumbers)
 
-		requests = requests + len(houseNumbers)
-		bar.Add(len(houseNumbers))
+		bar.Add(1)
+		//loadDates(houseNumbers, content)
 	}
 
 	bar.Finish()
-	fmt.Println(`Number of requests`, requests)
+	fmt.Println()
+	fmt.Printf("%d house numbers loaded", numberOfHouseNumbers)
+	fmt.Println()
+}
+
+func loadDates(houseNumbers []stadtreinigung.HouseNumber, content string) {
+	for _, houseNumber := range houseNumbers {
+		garbageContent, err := http.GetContent(houseNumber.Url)
+		garbageContent = repair.RepairInvalidHtml(garbageContent)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if content == "" {
+			log.Fatal(`Dates content is empty. Url: `, houseNumber.Url)
+		}
+
+		dates := stadtreinigung.ParseGarbageCollectionDates(garbageContent)
+
+		for _, date := range dates {
+			fmt.Println(date.Date, date.Type)
+		}
+	}
 }
 
 func loadStreets(firstLetters []stadtreinigung.FirstLetter, bar *progressbar.ProgressBar) []stadtreinigung.Street {
