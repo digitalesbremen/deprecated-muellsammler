@@ -35,7 +35,6 @@ func ParseIndexPage(indexPage string, bremerStadtreinigungRootUrl string) []Firs
 		token, tokenErr := decoder.Token()
 		if tokenErr != nil {
 			if tokenErr == io.EOF {
-				fmt.Println("EOF")
 				break
 			}
 			fmt.Println(tokenErr)

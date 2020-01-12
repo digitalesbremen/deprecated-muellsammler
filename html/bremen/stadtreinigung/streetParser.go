@@ -13,20 +13,20 @@ type Street struct {
 
 func ParseStreetPage(content string, firstLetter FirstLetter) ([]Street, error) {
 	streets := make([]Street, 0)
+	var err error = nil
 
 	if strings.Contains(content, `<!-- BEGIN: Keine Strassen gefunden:-->`) {
-		return streets, fmt.Errorf("Page does not contains streets")
-	}
-
-	if strings.Contains(content, `bitte w&auml;hlen Sie die Hausnummer:`) {
-		regex := regexp.MustCompile(`<!-- BEGIN: Strassen gefunden:-->\s*<h3>([` + firstLetter.FirstLetter + `][a-zA-Z-]*)<\/h2>`)
+		err = fmt.Errorf("Page does not contains streets")
+	} else if strings.Contains(content, `bitte w&auml;hlen Sie die Hausnummer:`) {
+		regex := regexp.MustCompile(`<!-- BEGIN: Strassen gefunden:-->\s*<h[0-9]>([` + firstLetter.FirstLetter + `][a-zA-Z-]*)<\/h[0-9]>`)
 		submatch := regex.FindStringSubmatch(content)
 		streetName := submatch[1]
 		streetUrl := firstLetter.Url
 		street := Street{streetName, streetUrl}
 		streets = append(streets, street)
-		return streets, nil
+	} else {
+
 	}
 
-	return streets, nil
+	return streets, err
 }

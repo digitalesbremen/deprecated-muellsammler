@@ -32,6 +32,8 @@ func main() {
 	streets := make([]stadtreinigung.Street, 0)
 
 	for _, firstLetter := range firstLetters {
+		fmt.Println(`Found first letter of street`, firstLetter.FirstLetter, firstLetter.Url)
+
 		content, err := http.GetContent(firstLetter.Url)
 
 		if err != nil {
@@ -41,7 +43,8 @@ func main() {
 		firstLetterStreets, err := stadtreinigung.ParseStreetPage(content, firstLetter)
 
 		if err != nil {
-			fmt.Printf(`Error while parsing streets of %s. Error is %s. Url will be ignored.`, firstLetter.Url, err)
+			fmt.Printf(`Error while parsing streets of %s. Error is '%s'. Url will be ignored.`, firstLetter.Url, err)
+			fmt.Println()
 		}
 
 		for _, element := range firstLetterStreets {
@@ -50,7 +53,6 @@ func main() {
 	}
 
 	for _, street := range streets {
-		fmt.Println(`Street name`, street.Name)
-		fmt.Println(`Street url`, street.Url)
+		fmt.Println(`Found street`, street.Name, street.Url)
 	}
 }
