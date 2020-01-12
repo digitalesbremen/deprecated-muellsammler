@@ -2,6 +2,7 @@ package main
 
 import (
 	"bremen_trash/html/bremen/stadtreinigung"
+	"bremen_trash/html/bremen/stadtreinigung/parser"
 	"bremen_trash/html/repair"
 	"bremen_trash/net/http"
 	"fmt"
@@ -18,14 +19,16 @@ var (
 func main() {
 	// Load first letters
 	fmt.Println("Loading street first letters")
+	bar := progressbar.NewOptions(1, progressbar.OptionSetRenderBlankState(true))
 	firstLetters := loadFirstLetterOfStreets()
+	bar.Finish()
 	fmt.Printf("%d street first letters loaded", len(firstLetters))
 	fmt.Println()
 	fmt.Println()
 
 	// Load streets
 	fmt.Println("Loading streets")
-	bar := progressbar.NewOptions(3700, progressbar.OptionSetRenderBlankState(true))
+	bar = progressbar.NewOptions(3700, progressbar.OptionSetRenderBlankState(true))
 	streets := loadStreets(firstLetters, bar)
 	bar.Finish()
 	fmt.Println()
@@ -62,7 +65,7 @@ func main() {
 	fmt.Println()
 }
 
-func loadDates(houseNumbers []stadtreinigung.HouseNumber, content string) {
+func loadDates(houseNumbers []parser.Dto, content string) {
 	for _, houseNumber := range houseNumbers {
 		garbageContent, err := http.GetContent(houseNumber.Url)
 		garbageContent = repair.RepairInvalidHtml(garbageContent)
@@ -83,8 +86,8 @@ func loadDates(houseNumbers []stadtreinigung.HouseNumber, content string) {
 	}
 }
 
-func loadStreets(firstLetters []stadtreinigung.FirstLetter, bar *progressbar.ProgressBar) []stadtreinigung.Street {
-	streets := make([]stadtreinigung.Street, 0)
+func loadStreets(firstLetters []parser.Dto, bar *progressbar.ProgressBar) []parser.Dto {
+	streets := make([]parser.Dto, 0)
 
 	for _, firstLetter := range firstLetters {
 		//fmt.Println(`Found first letter of street`, firstLetter.FirstLetter, firstLetter.Url)
@@ -96,7 +99,7 @@ func loadStreets(firstLetters []stadtreinigung.FirstLetter, bar *progressbar.Pro
 			log.Fatal(err)
 		}
 
-		firstLetterStreets, err := stadtreinigung.ParseStreetPage(content, firstLetter, bremerStadtreinigungRootUrl)
+		firstLetterStreets := stadtreinigung.ParseStreetPage(content, firstLetter, bremerStadtreinigungRootUrl)
 
 		//if err != nil {
 		//	fmt.Printf(`Error while parsing streets of %s. Error is '%s'. Url will be ignored.`, firstLetter.Url, err)
@@ -112,7 +115,7 @@ func loadStreets(firstLetters []stadtreinigung.FirstLetter, bar *progressbar.Pro
 	return streets
 }
 
-func loadFirstLetterOfStreets() []stadtreinigung.FirstLetter {
+func loadFirstLetterOfStreets() []parser.Dto {
 	content, err := http.GetContent(bremerStadtreinigungIndexUrl)
 
 	if err != nil {

@@ -30,6 +30,7 @@ Hier eine kleine Berichterstattung meiner Herausforderungen bzw. gemachten Erfah
 Straße mit diesem Anfangsbuchstaben gibt, nur die Hausnummern der Straße). Zudem gibt es `http://213.168.213.236/bremereb/bify/hausnummer.jsp?strasse=...` 
 um Hausnummern anzuzeigen. Verwirrend und schwierig. 
 * Regex macht mehr Spaß als ich immer gedacht habe.
+* Golang kann auch Funktionen als Übergabeparameter.
 
 ## Projekt
 
@@ -39,8 +40,8 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 ### Stand
 
 * Die Indexseite wird geparsed und alle Anfangsbuchstaben aller Straßen werden geladen.
-* Zu jedem Anfangsbuchstaben werden alle Straßen geladen.
-* Zu jeder Straße werden alle Hausnummern geladen.
+* Zu jedem Anfangsbuchstaben werden alle (ca 3700) Straßen geladen.
+* Zu jeder Straße werden alle (ca 130000) Hausnummern geladen.
 * Eine Progressbar im Log gibt den Ladezustand an. Zur Zeit werden ungefährt 130.000 Request in 2m43s durchgeführt
 
 ### Anforderungen
