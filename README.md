@@ -31,6 +31,7 @@ Straße mit diesem Anfangsbuchstaben gibt, nur die Hausnummern der Straße). Zud
 um Hausnummern anzuzeigen. Verwirrend und schwierig. 
 * Ich muss mich in Regex immer erst wieder einarbeiten. Dann macht es aber Spaß.
 * Golang kann auch Funktionen als Übergabeparameter.
+* `go build`führt keine Tests aus. `go test` führt keine Tests in submodules aus.
 
 ## Projekt
 

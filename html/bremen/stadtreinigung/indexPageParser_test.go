@@ -1,6 +1,7 @@
 package stadtreinigung
 
 import (
+	"bremen_trash/html/bremen/stadtreinigung/parser"
 	"testing"
 )
 
@@ -48,13 +49,13 @@ func TestParseIndexPage(t *testing.T) {
 	assertFirstLetterUrlUrl(t, firstLetters, 5, `www.test.url/strasse.jsp?strasse=O`)
 }
 
-func assertFirstLetterValue(t *testing.T, firstLetters []FirstLetter, index int, want string) {
-	if firstLetters[index].FirstLetter != want {
-		t.Errorf(`ParseIndexPage(sample, test-root-url)[%d].FirstLetter = %s; want %s`, index, firstLetters[index].FirstLetter, want)
+func assertFirstLetterValue(t *testing.T, firstLetters []parser.Dto, index int, want string) {
+	if firstLetters[index].Value != want {
+		t.Errorf(`ParseIndexPage(sample, test-root-url)[%d].FirstLetter = %s; want %s`, index, firstLetters[index].Value, want)
 	}
 }
 
-func assertFirstLetterUrlUrl(t *testing.T, firstLetters []FirstLetter, index int, want string) {
+func assertFirstLetterUrlUrl(t *testing.T, firstLetters []parser.Dto, index int, want string) {
 	if firstLetters[index].Url != want {
 		t.Errorf(`ParseIndexPage(sample, test-root-url)[%d].Url = %s; want %s`, index, firstLetters[index].Url, want)
 	}
