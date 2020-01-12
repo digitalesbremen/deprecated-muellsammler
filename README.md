@@ -38,8 +38,8 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 
 ### Stand
 
-Die Indexseite der Stadtreinigung wird beim Start der Anwendung automatisiert eingelesen und eine Liste aller
-Anfangsbuchstaben der Straßennamen und der dahinterliegenden URL wird in die Konsole geloggt.
+* Die Indexseite wird geparsed und alle Anfangsbuchstaben aller Straßen werden im Log ausgegeben.
+* Zu jedem Anfangsbuchstaben werden alle Straßen geladen und um Log ausgegeben.
 
 ### Anforderungen
 
