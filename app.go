@@ -20,6 +20,22 @@ func main() {
 
 	for _, street := range streets {
 		fmt.Println(`Found street`, street.Name, street.Url)
+		content, err := http.GetContent(street.Url)
+		content = repair.RepairInvalidHtml(content)
+
+		// Hack: Fix <h3> ends with </h2>
+		content = strings.ReplaceAll(content, "<h2>", "<h3>")
+		content = strings.ReplaceAll(content, "</h2>", "</h3>")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		houseNumbers := stadtreinigung.ParseHouseNumber(content, bremerStadtreinigungRootUrl)
+
+		for _, houseNumber := range houseNumbers {
+			fmt.Println(`Found house number`, houseNumber.Name, houseNumber.Url)
+		}
 	}
 }
 
