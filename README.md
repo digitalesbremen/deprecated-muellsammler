@@ -25,7 +25,7 @@ Hier eine kleine Berichterstattung meiner Herausforderungen bzw. gemachten Erfah
 * Feststellen, dass der [Abfallkalender der Bremer Stadtreinigung](http://213.168.213.236/bremereb/bify/index.jsp) kein valides HTML liefert.
 * Feststellen, dass der [Abfallkalender der Bremer Stadtreinigung](http://213.168.213.236/bremereb/bify/index.jsp) statt UTF-8 in Windows-1252 codiert ist.
 * Pointer spielen in golang wieder eine Rolle.
-* Feststellen, dass es offensichtlich ok ist, ein `<h3>` mit einem `</h2>` geschlossen werden darf.
+* Feststellen, dass es offensichtlich ok ist, ein `<h3>` mit einem `</h2>` zu schließen.
 * Feststellen, dass die Endung der URL `/strasse.jsp?strasse=...` einerseits alle Straßen mit einem gewissen Anfangsbuchstaben anzeigt, aber auch (sofern es nur eine
 Straße mit diesem Anfangsbuchstaben gibt, nur die Hausnummern der Straße). Zudem gibt es `http://213.168.213.236/bremereb/bify/hausnummer.jsp?strasse=...` 
 um Hausnummern anzuzeigen. Verwirrend und schwierig. 
