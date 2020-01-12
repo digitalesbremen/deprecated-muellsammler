@@ -5,6 +5,7 @@ import (
 	"bremen_trash/html/repair"
 	"bremen_trash/net/http"
 	"fmt"
+	"github.com/schollz/progressbar/v2"
 	"log"
 	"strings"
 )
@@ -15,11 +16,17 @@ var (
 )
 
 func main() {
+	bar := progressbar.New(130000)
+
 	firstLetters := loadFirstLetterOfStreets()
-	streets := loadStreets(firstLetters)
+	requests := 1
+
+	streets := loadStreets(firstLetters, bar)
+	requests = requests + len(streets)
 
 	for _, street := range streets {
-		fmt.Println(`Found street`, street.Name, street.Url)
+		bar.Add(1)
+		//fmt.Println(`Found street`, street.Name, street.Url)
 		content, err := http.GetContent(street.Url)
 		content = repair.RepairInvalidHtml(content)
 
@@ -33,17 +40,20 @@ func main() {
 
 		houseNumbers := stadtreinigung.ParseHouseNumber(content, bremerStadtreinigungRootUrl)
 
-		for _, houseNumber := range houseNumbers {
-			fmt.Println(`Found house number`, houseNumber.Name, houseNumber.Url)
-		}
+		requests = requests + len(houseNumbers)
+
+		bar.Add(len(houseNumbers))
 	}
+
+	bar.Finish()
+	fmt.Println(`Number of requests`, requests)
 }
 
-func loadStreets(firstLetters []stadtreinigung.FirstLetter) []stadtreinigung.Street {
+func loadStreets(firstLetters []stadtreinigung.FirstLetter, bar *progressbar.ProgressBar) []stadtreinigung.Street {
 	streets := make([]stadtreinigung.Street, 0)
 
 	for _, firstLetter := range firstLetters {
-		fmt.Println(`Found first letter of street`, firstLetter.FirstLetter, firstLetter.Url)
+		//fmt.Println(`Found first letter of street`, firstLetter.FirstLetter, firstLetter.Url)
 
 		content, err := http.GetContent(firstLetter.Url)
 		content = repair.RepairInvalidHtml(content)
@@ -54,14 +64,16 @@ func loadStreets(firstLetters []stadtreinigung.FirstLetter) []stadtreinigung.Str
 
 		firstLetterStreets, err := stadtreinigung.ParseStreetPage(content, firstLetter, bremerStadtreinigungRootUrl)
 
-		if err != nil {
-			fmt.Printf(`Error while parsing streets of %s. Error is '%s'. Url will be ignored.`, firstLetter.Url, err)
-			fmt.Println()
-		}
+		//if err != nil {
+		//	fmt.Printf(`Error while parsing streets of %s. Error is '%s'. Url will be ignored.`, firstLetter.Url, err)
+		//	fmt.Println()
+		//}
 
 		for _, element := range firstLetterStreets {
 			streets = append(streets, element)
 		}
+
+		bar.Add(len(firstLetterStreets))
 	}
 	return streets
 }
