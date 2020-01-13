@@ -22,6 +22,7 @@ func main() {
 	bar := progressbar.NewOptions(1, progressbar.OptionSetRenderBlankState(true))
 	firstLetters := loadFirstLetterOfStreets()
 	bar.Finish()
+	fmt.Println()
 	fmt.Printf("%d street first letters loaded", len(firstLetters))
 	fmt.Println()
 	fmt.Println()
@@ -36,10 +37,15 @@ func main() {
 	fmt.Println()
 	fmt.Println()
 
+	type GarbageCollectionUrl struct {
+		Street               string
+		HouseNumber          string
+		GarbageCollectionUrl string
+	}
+
 	fmt.Println("Loading house numbers")
-	numberOfHouseNumbers := 0
+	garbageCollectionUrls := make([]GarbageCollectionUrl, 0)
 	bar = progressbar.NewOptions(len(streets), progressbar.OptionSetRenderBlankState(true))
-	// load house numbers for all streets
 	for _, street := range streets {
 		content, err := http.GetContent(street.Url)
 		content = repair.RepairInvalidHtml(content)
@@ -53,7 +59,10 @@ func main() {
 		}
 
 		houseNumbers := stadtreinigung.ParseHouseNumber(content, bremerStadtreinigungRootUrl)
-		numberOfHouseNumbers = numberOfHouseNumbers + len(houseNumbers)
+
+		for _, houseNumber := range houseNumbers {
+			garbageCollectionUrls = append(garbageCollectionUrls, GarbageCollectionUrl{street.Value, houseNumber.Value, houseNumber.Url})
+		}
 
 		bar.Add(1)
 		//loadDates(houseNumbers, content)
@@ -61,29 +70,37 @@ func main() {
 
 	bar.Finish()
 	fmt.Println()
-	fmt.Printf("%d house numbers loaded", numberOfHouseNumbers)
+	fmt.Printf("%d house numbers loaded", len(garbageCollectionUrls))
+	fmt.Println()
+	fmt.Println()
+
+	fmt.Println("Loading garbage collection dates")
+	bar = progressbar.NewOptions(len(garbageCollectionUrls), progressbar.OptionSetRenderBlankState(true))
+	dates := 0
+	for _, garbageCollectionUrl := range garbageCollectionUrls {
+		gcd := loadDates(garbageCollectionUrl.GarbageCollectionUrl)
+		bar.Add(1)
+		dates = dates + len(gcd)
+	}
+	bar.Finish()
+	fmt.Println()
+	fmt.Printf("%d garbage collection dates loaded", dates)
 	fmt.Println()
 }
 
-func loadDates(houseNumbers []parser.Dto, content string) {
-	for _, houseNumber := range houseNumbers {
-		garbageContent, err := http.GetContent(houseNumber.Url)
-		garbageContent = repair.RepairInvalidHtml(garbageContent)
+func loadDates(garbageCollectionUrl string) []stadtreinigung.GarageCollection {
+	garbageContent, err := http.GetContent(garbageCollectionUrl)
+	garbageContent = repair.RepairInvalidHtml(garbageContent)
 
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if content == "" {
-			log.Fatal(`Dates content is empty. Url: `, houseNumber.Url)
-		}
-
-		dates := stadtreinigung.ParseGarbageCollectionDates(garbageContent)
-
-		for _, date := range dates {
-			fmt.Println(date.Date, date.Type)
-		}
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	if garbageContent == "" {
+		log.Fatal(`Dates content is empty. Url: `, garbageCollectionUrl)
+	}
+
+	return stadtreinigung.ParseGarbageCollectionDates(garbageContent)
 }
 
 func loadStreets(firstLetters []parser.Dto, bar *progressbar.ProgressBar) []parser.Dto {

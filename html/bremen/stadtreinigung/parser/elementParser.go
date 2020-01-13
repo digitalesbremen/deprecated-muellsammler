@@ -66,7 +66,10 @@ func ParseHtml(content string, fn matches, bremerStadtreinigungRootUrl string) [
 }
 
 func (td Td) mapToDto(bremerStadtreinigungRootUrl string) Dto {
-	return Dto{html.UnescapeString(td.A.Value), bremerStadtreinigungRootUrl + td.A.Href}
+	url := bremerStadtreinigungRootUrl + td.A.Href
+	url = strings.ReplaceAll(url, ` `, `%20`)
+	url = strings.ReplaceAll(url, `ß`, `%DF`)
+	return Dto{html.UnescapeString(td.A.Value), url}
 }
 
 func (td Td) matches() bool {
