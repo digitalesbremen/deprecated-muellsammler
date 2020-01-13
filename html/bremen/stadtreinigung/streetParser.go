@@ -1,10 +1,11 @@
 package stadtreinigung
 
 import (
-	"bremen_trash/html/bremen/stadtreinigung/parser"
 	"encoding/xml"
 	"regexp"
 	"strings"
+
+	"bremen_trash/html/bremen/stadtreinigung/parser"
 )
 
 func ParseStreetPage(content string, firstLetter parser.Dto, bremerStadtreinigungRootUrl string) []parser.Dto {

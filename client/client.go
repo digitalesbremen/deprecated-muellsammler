@@ -2,10 +2,11 @@ package client
 
 import (
 	"fmt"
-	"golang.org/x/text/encoding/charmap"
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	"golang.org/x/text/encoding/charmap"
 )
 
 type Client struct {

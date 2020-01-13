@@ -1,8 +1,9 @@
 package stadtreinigung
 
 import (
-	"bremen_trash/html/bremen/stadtreinigung/parser"
 	"testing"
+
+	"bremen_trash/html/bremen/stadtreinigung/parser"
 )
 
 var (
