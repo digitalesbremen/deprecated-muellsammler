@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"golang.org/x/text/encoding/charmap"
+
+	"bremen_trash/client/repair"
 )
 
 type Client struct {
@@ -57,7 +60,18 @@ func (c *Client) GetContent(url string) (content string, err error) {
 			return "", err
 		}
 
-		return string(body), nil
+		content := string(body)
+		content = repair.RepairInvalidHtml(content)
+
+		// Hack: Don't now why but parsing </br> does not work.
+		content = strings.ReplaceAll(content, "<br>", "")
+		content = strings.ReplaceAll(content, "</br>", "")
+
+		// Hack: Fix <h3> ends with </h2>
+		content = strings.ReplaceAll(content, "<h2>", "<h3>")
+		content = strings.ReplaceAll(content, "</h2>", "</h3>")
+
+		return content, nil
 	} else {
 		return "", fmt.Errorf("Try to load `%s`. Response code is '%s'", url, resp.Status)
 	}

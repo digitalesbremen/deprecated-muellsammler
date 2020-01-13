@@ -3,14 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
-	"strings"
+
+	"github.com/schollz/progressbar/v2"
 
 	"bremen_trash/client"
 	"bremen_trash/html/bremen/stadtreinigung"
 	"bremen_trash/html/bremen/stadtreinigung/parser"
-	"bremen_trash/html/repair"
-
-	"github.com/schollz/progressbar/v2"
 )
 
 var (
@@ -51,11 +49,6 @@ func main() {
 	bar = progressbar.NewOptions(len(streets), progressbar.OptionSetRenderBlankState(true))
 	for _, street := range streets {
 		content, err := c.GetContent(street.Url)
-		content = repair.RepairInvalidHtml(content)
-
-		// Hack: Fix <h3> ends with </h2>
-		content = strings.ReplaceAll(content, "<h2>", "<h3>")
-		content = strings.ReplaceAll(content, "</h2>", "</h3>")
 
 		if err != nil {
 			log.Fatal(err)
@@ -93,7 +86,6 @@ func main() {
 
 func loadDates(garbageCollectionUrl string) []stadtreinigung.GarageCollection {
 	garbageContent, err := c.GetContent(garbageCollectionUrl)
-	garbageContent = repair.RepairInvalidHtml(garbageContent)
 
 	if err != nil {
 		log.Fatal(err)
@@ -113,7 +105,6 @@ func loadStreets(firstLetters []parser.Dto, bar *progressbar.ProgressBar) []pars
 		//fmt.Println(`Found first letter of street`, firstLetter.FirstLetter, firstLetter.Url)
 
 		content, err := c.GetContent(firstLetter.Url)
-		content = repair.RepairInvalidHtml(content)
 
 		if err != nil {
 			log.Fatal(err)
@@ -141,12 +132,6 @@ func loadFirstLetterOfStreets() []parser.Dto {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	content = repair.RepairInvalidHtml(content)
-
-	// Hack: Don't now why but parsing </br> does not work.
-	content = strings.ReplaceAll(content, "<br>", "")
-	content = strings.ReplaceAll(content, "</br>", "")
 
 	firstLetters := stadtreinigung.ParseIndexPage(content, bremerStadtreinigungRootUrl)
 	return firstLetters
