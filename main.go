@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/schollz/progressbar/v2"
-
 	"bremen_trash/client"
 	"bremen_trash/html/bremen/stadtreinigung"
 	"bremen_trash/html/bremen/stadtreinigung/parser"
+	"bremen_trash/progressbar"
 )
 
 var (
@@ -20,23 +19,15 @@ var (
 func main() {
 	// Load first letters
 	fmt.Println("Loading street first letters")
-	bar := progressbar.NewOptions(1, progressbar.OptionSetRenderBlankState(true))
+	bar := progressbar.NewProgressBar(1)
 	firstLetters := loadFirstLetterOfStreets()
-	_ = bar.Finish()
-	fmt.Println()
-	fmt.Printf("%d street first letters loaded", len(firstLetters))
-	fmt.Println()
-	fmt.Println()
+	bar.Finish("%d street first letters loaded", len(firstLetters))
 
 	// Load streets
 	fmt.Println("Loading streets")
-	bar = progressbar.NewOptions(3700, progressbar.OptionSetRenderBlankState(true))
+	bar = progressbar.NewProgressBar(3700)
 	streets := loadStreets(firstLetters, bar)
-	_ = bar.Finish()
-	fmt.Println()
-	fmt.Printf("%d streets loaded", len(streets))
-	fmt.Println()
-	fmt.Println()
+	bar.Finish("%d streets loaded", len(streets))
 
 	type GarbageCollectionUrl struct {
 		Street               string
@@ -46,7 +37,7 @@ func main() {
 
 	fmt.Println("Loading house numbers")
 	garbageCollectionUrls := make([]GarbageCollectionUrl, 0)
-	bar = progressbar.NewOptions(len(streets), progressbar.OptionSetRenderBlankState(true))
+	bar = progressbar.NewProgressBar(len(streets))
 	for _, street := range streets {
 		content, err := c.GetContent(street.Url)
 
@@ -60,28 +51,21 @@ func main() {
 			garbageCollectionUrls = append(garbageCollectionUrls, GarbageCollectionUrl{street.Value, houseNumber.Value, houseNumber.Url})
 		}
 
-		_ = bar.Add(1)
+		bar.Add(1)
 		//loadDates(houseNumbers, content)
 	}
 
-	_ = bar.Finish()
-	fmt.Println()
-	fmt.Printf("%d house numbers loaded", len(garbageCollectionUrls))
-	fmt.Println()
-	fmt.Println()
+	bar.Finish("%d house numbers loaded", len(garbageCollectionUrls))
 
 	fmt.Println("Loading garbage collection dates")
-	bar = progressbar.NewOptions(len(garbageCollectionUrls), progressbar.OptionSetRenderBlankState(true))
+	bar = progressbar.NewProgressBar(len(garbageCollectionUrls))
 	dates := 0
 	for _, garbageCollectionUrl := range garbageCollectionUrls {
 		gcd := loadDates(garbageCollectionUrl.GarbageCollectionUrl)
-		_ = bar.Add(1)
+		bar.Add(1)
 		dates = dates + len(gcd)
 	}
-	_ = bar.Finish()
-	fmt.Println()
-	fmt.Printf("%d garbage collection dates loaded", dates)
-	fmt.Println()
+	bar.Finish("%d garbage collection dates loaded", dates)
 }
 
 func loadDates(garbageCollectionUrl string) []stadtreinigung.GarageCollection {
@@ -112,16 +96,11 @@ func loadStreets(firstLetters []parser.Dto, bar *progressbar.ProgressBar) []pars
 
 		firstLetterStreets := stadtreinigung.ParseStreetPage(content, firstLetter, bremerStadtreinigungRootUrl)
 
-		//if err != nil {
-		//	fmt.Printf(`Error while parsing streets of %s. Error is '%s'. Url will be ignored.`, firstLetter.Url, err)
-		//	fmt.Println()
-		//}
-
 		for _, element := range firstLetterStreets {
 			streets = append(streets, element)
 		}
 
-		_ = bar.Add(len(firstLetterStreets))
+		bar.Add(len(firstLetterStreets))
 	}
 	return streets
 }
