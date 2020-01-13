@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bremen_trash/client"
 	"bremen_trash/html/bremen/stadtreinigung"
 	"bremen_trash/html/bremen/stadtreinigung/parser"
 	"bremen_trash/html/repair"
-	"bremen_trash/net/http"
 	"fmt"
 	"github.com/schollz/progressbar/v2"
 	"log"
@@ -14,6 +14,7 @@ import (
 var (
 	bremerStadtreinigungRootUrl  = "http://213.168.213.236/bremereb/bify/"
 	bremerStadtreinigungIndexUrl = bremerStadtreinigungRootUrl + "index.jsp"
+	c                            = client.NewClient()
 )
 
 func main() {
@@ -47,7 +48,7 @@ func main() {
 	garbageCollectionUrls := make([]GarbageCollectionUrl, 0)
 	bar = progressbar.NewOptions(len(streets), progressbar.OptionSetRenderBlankState(true))
 	for _, street := range streets {
-		content, err := http.GetContent(street.Url)
+		content, err := c.GetContent(street.Url)
 		content = repair.RepairInvalidHtml(content)
 
 		// Hack: Fix <h3> ends with </h2>
@@ -89,7 +90,7 @@ func main() {
 }
 
 func loadDates(garbageCollectionUrl string) []stadtreinigung.GarageCollection {
-	garbageContent, err := http.GetContent(garbageCollectionUrl)
+	garbageContent, err := c.GetContent(garbageCollectionUrl)
 	garbageContent = repair.RepairInvalidHtml(garbageContent)
 
 	if err != nil {
@@ -109,7 +110,7 @@ func loadStreets(firstLetters []parser.Dto, bar *progressbar.ProgressBar) []pars
 	for _, firstLetter := range firstLetters {
 		//fmt.Println(`Found first letter of street`, firstLetter.FirstLetter, firstLetter.Url)
 
-		content, err := http.GetContent(firstLetter.Url)
+		content, err := c.GetContent(firstLetter.Url)
 		content = repair.RepairInvalidHtml(content)
 
 		if err != nil {
@@ -133,7 +134,7 @@ func loadStreets(firstLetters []parser.Dto, bar *progressbar.ProgressBar) []pars
 }
 
 func loadFirstLetterOfStreets() []parser.Dto {
-	content, err := http.GetContent(bremerStadtreinigungIndexUrl)
+	content, err := c.GetContent(bremerStadtreinigungIndexUrl)
 
 	if err != nil {
 		log.Fatal(err)

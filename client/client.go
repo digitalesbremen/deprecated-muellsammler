@@ -1,4 +1,4 @@
-package http
+package client
 
 import (
 	"fmt"
@@ -8,20 +8,33 @@ import (
 	"time"
 )
 
-func GetContent(url string) (content string, err error) {
+type Client struct {
+	Timeout               time.Duration
+	RetryTimeAfterTimeout time.Duration
+}
+
+func NewClient() *Client {
+	client := Client{
+		Timeout:               1 * time.Second,
+		RetryTimeAfterTimeout: 10 * time.Second,
+	}
+	return &client
+}
+
+func (c *Client) GetContent(url string) (content string, err error) {
 	//fmt.Printf("Request url `%s`\n", url)
 
-	//time.Sleep(10 * time.Millisecond)
 	client := http.Client{
-		Timeout: 1 * time.Second,
+		Timeout: c.Timeout,
 	}
+
 	resp, err := client.Get(url)
 
 	if err != nil {
 		fmt.Println()
 		fmt.Printf(`Timeout while loading '%s'. Retry in 10 seconds.`, url)
 		fmt.Println()
-		time.Sleep(10 * time.Second)
+		time.Sleep(c.RetryTimeAfterTimeout)
 
 		resp, err = client.Get(url)
 
