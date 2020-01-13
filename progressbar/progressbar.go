@@ -17,7 +17,7 @@ func (p *ProgressBar) Add(num int) {
 func (p *ProgressBar) Finish(format string, a ...interface{}) {
 	_ = p.progressbar.Finish()
 	fmt.Println()
-	fmt.Printf(format, a)
+	fmt.Printf(format, a...)
 	fmt.Println()
 	fmt.Println()
 }
