@@ -4,7 +4,7 @@ import "testing"
 
 var (
 	//
-	dataSets = [7][2]string{
+	dataSets = [11][2]string{
 		{` href=hausnummer.jsp?strasse=Landsberger+Stra%DFe`, ` href="hausnummer.jsp?strasse=Landsberger+Stra%DFe"`},   // invalid -> must fixed
 		{` href=hausnummer.jsp?strasse=Landsberger+Stra%DFe `, ` href="hausnummer.jsp?strasse=Landsberger+Stra%DFe" `}, // invalid -> must fixed
 		{` width=60%`, ` width="60%"`}, // invalid -> must fixed
@@ -12,6 +12,10 @@ var (
 		{` href='hausnummer.jsp?strasse=Landsberger+Stra%DFe'`, ` href='hausnummer.jsp?strasse=Landsberger+Stra%DFe'`}, // valid -> won't fixed
 		{` href="hausnummer.jsp?strasse=Landsberger+Stra%DFe"`, ` href="hausnummer.jsp?strasse=Landsberger+Stra%DFe"`}, // valid -> won't fixed
 		{` name="hello world"`, ` name="hello world"`},                                                                 // valid -> won't fixed
+		{`<br>`, ``},       // cannot handled ->  must fixed
+		{`</br>`, ``},      // cannot handled ->  must fixed
+		{`<h2>`, `<h3>`},   // cannot handled ->  must fixed
+		{`</h2>`, `</h3>`}, // cannot handled ->  must fixed
 	}
 )
 

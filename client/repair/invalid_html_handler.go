@@ -2,6 +2,7 @@ package repair
 
 import (
 	"regexp"
+	"strings"
 )
 
 var (
@@ -13,5 +14,16 @@ var (
 )
 
 func RepairInvalidHtml(html string) string {
-	return missingQuotesRegex.ReplaceAllString(metaTagContentRegex.ReplaceAllString(html, "$1;$3"), ` $1="$2"`)
+	repairedHtml := metaTagContentRegex.ReplaceAllString(html, "$1;$3")
+	repairedHtml = missingQuotesRegex.ReplaceAllString(repairedHtml, ` $1="$2"`)
+
+	// Hack: Don't now why but parsing </br> does not work.
+	repairedHtml = strings.ReplaceAll(repairedHtml, "<br>", "")
+	repairedHtml = strings.ReplaceAll(repairedHtml, "</br>", "")
+
+	// Hack: Fix <h3> ends with </h2>
+	repairedHtml = strings.ReplaceAll(repairedHtml, "<h2>", "<h3>")
+	repairedHtml = strings.ReplaceAll(repairedHtml, "</h2>", "</h3>")
+
+	return repairedHtml
 }

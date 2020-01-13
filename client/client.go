@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 	"time"
 
 	"golang.org/x/text/encoding/charmap"
@@ -26,8 +25,6 @@ func NewClient() *Client {
 }
 
 func (c *Client) GetContent(url string) (content string, err error) {
-	//fmt.Printf("Request url `%s`\n", url)
-
 	client := http.Client{
 		Timeout: c.Timeout,
 	}
@@ -49,8 +46,6 @@ func (c *Client) GetContent(url string) (content string, err error) {
 
 	defer resp.Body.Close()
 
-	//fmt.Println(resp.StatusCode)
-
 	if resp.StatusCode == http.StatusOK {
 		reader := charmap.Windows1252.NewDecoder().Reader(resp.Body)
 
@@ -62,14 +57,6 @@ func (c *Client) GetContent(url string) (content string, err error) {
 
 		content := string(body)
 		content = repair.RepairInvalidHtml(content)
-
-		// Hack: Don't now why but parsing </br> does not work.
-		content = strings.ReplaceAll(content, "<br>", "")
-		content = strings.ReplaceAll(content, "</br>", "")
-
-		// Hack: Fix <h3> ends with </h2>
-		content = strings.ReplaceAll(content, "<h2>", "<h3>")
-		content = strings.ReplaceAll(content, "</h2>", "</h3>")
 
 		return content, nil
 	} else {
