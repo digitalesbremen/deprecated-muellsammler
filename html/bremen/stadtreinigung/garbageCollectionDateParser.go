@@ -58,7 +58,12 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 				var nobr Nobr
 				_ = decoder.DecodeElement(&nobr, &startElement)
 
-				fmt.Println(nobr.Value)
+				submatch := regexp.MustCompile(`([0-9]{2}.[0-9]{2})\.&nbsp;(.*)`).FindStringSubmatch(nobr.Value)
+
+				if len(submatch) == 3 {
+					fmt.Printf(`%s.%s - %s`, submatch[1], b.Value, submatch[2])
+					fmt.Println()
+				}
 			}
 		}
 	}
