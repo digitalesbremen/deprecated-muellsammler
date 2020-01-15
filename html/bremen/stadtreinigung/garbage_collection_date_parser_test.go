@@ -1,6 +1,8 @@
 package stadtreinigung
 
-import "testing"
+import (
+	"testing"
+)
 
 var (
 	collectionDateSample = `
@@ -59,10 +61,30 @@ var (
 func TestParseGarbageCollectionDates(t *testing.T) {
 	collectionDates := ParseGarbageCollectionDates(collectionDateSample)
 
-	if collectionDates[0].Date != `05.07.` {
-		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type = %s; want %s`, 0, collectionDates[0].Date, `05.07.`)
+	assertCollectionDate(t, collectionDates, 0, `05.07.`)
+	assertCollectionType(t, collectionDates, 0, `Papier / Gelber Sack`)
+	assertCollectionDate(t, collectionDates, 1, `12.07.`)
+	assertCollectionType(t, collectionDates, 1, `Restmüll / Bioabfall`)
+	assertCollectionDate(t, collectionDates, 2, `01.06.`)
+	assertCollectionType(t, collectionDates, 2, `Restm. / Bioabf.`)
+	assertCollectionDate(t, collectionDates, 3, `06.06.`)
+	assertCollectionType(t, collectionDates, 3, `Papier / Gelber Sack`)
+	assertCollectionDate(t, collectionDates, 4, `11.01.`)
+	assertCollectionType(t, collectionDates, 4, `Tannenbaumabfuhr`)
+	assertCollectionDate(t, collectionDates, 5, `23.05.`)
+	assertCollectionType(t, collectionDates, 5, `Papier / G.Sack`)
+	assertCollectionDate(t, collectionDates, 6, `28.05.`)
+	assertCollectionType(t, collectionDates, 6, `Restmüll / Bioabfall`)
+}
+
+func assertCollectionDate(t *testing.T, collectionDates []GarageCollection, index int, want string) {
+	if collectionDates[index].Date != want {
+		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type = %s; want %s`, index, collectionDates[index].Date, want)
 	}
-	if collectionDates[0].Type != `Papier / Gelber Sack` {
-		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type = %s; want %s`, 0, collectionDates[0].Type, `Papier / Gelber Sack`)
+}
+
+func assertCollectionType(t *testing.T, collectionDates []GarageCollection, index int, want string) {
+	if collectionDates[index].Type != want {
+		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type = %s; want %s`, index, collectionDates[index].Type, want)
 	}
 }
