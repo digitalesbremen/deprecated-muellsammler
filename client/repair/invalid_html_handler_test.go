@@ -4,9 +4,10 @@ import "testing"
 
 var (
 	//
-	dataSets = [11][2]string{
+	dataSets = [12][2]string{
 		{` href=hausnummer.jsp?strasse=Landsberger+Stra%DFe`, ` href="hausnummer.jsp?strasse=Landsberger+Stra%DFe"`},   // invalid -> must fixed
 		{` href=hausnummer.jsp?strasse=Landsberger+Stra%DFe `, ` href="hausnummer.jsp?strasse=Landsberger+Stra%DFe" `}, // invalid -> must fixed
+		{`<nobr>05.07.&nbsp;Papier / Gelber Sack<nobr>`, `<nobr>05.07.&nbsp;Papier / Gelber Sack</nobr>`},              // invalid -> must fixed
 		{` width=60%`, ` width="60%"`}, // invalid -> must fixed
 		{` content="text/html; charset=ISO-8859-1"`, ` content="text/html;charset=ISO-8859-1"`},                        // valid -> but trim within
 		{` href='hausnummer.jsp?strasse=Landsberger+Stra%DFe'`, ` href='hausnummer.jsp?strasse=Landsberger+Stra%DFe'`}, // valid -> won't fixed

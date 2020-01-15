@@ -16,17 +16,17 @@ var (
 					<td valign='top'>
 						<b>Juli 2018</b>
 						<br>
-						<nobr>05.07.&nbsp;Papier / Gelber Sack<nobr>
+						<nobr>05.07.&nbsp;Papier / Gelber Sack</nobr>
 						<br>
-						<nobr>12.07.&nbsp;Restmüll / Bioabfall<nobr>
+						<nobr>12.07.&nbsp;Restmüll / Bioabfall</nobr>
 						<br>
 					</td>
 					<td valign='top'>
 						<b>Juni 2019</b>
 						<br>
-						<nobr>(Sa) 01.06.&nbsp;Restm. / Bioabf.<nobr>
+						<nobr>(Sa) 01.06.&nbsp;Restm. / Bioabf.</nobr>
 						<br>
-						<nobr>06.06.&nbsp;Papier / Gelber Sack<nobr>
+						<nobr>06.06.&nbsp;Papier / Gelber Sack</nobr>
 						<br>
 					</td>
 				</tr>
@@ -42,18 +42,18 @@ var (
 					<td valign='top'>
 						<b>Januar 2020</b>
 						<br>
-						<nobr>11.01.&nbsp;Tannenbaumabfuhr<nobr>
+						<nobr>11.01.&nbsp;Tannenbaumabfuhr</nobr>
 						<br>
 					</td>
 					<td valign='top'>
-					<b>Mai 2020</b>
-					<br>
-					<nobr>(Sa) 23.05.&nbsp;Papier / G.Sack<nobr>
-					<br>
-					<nobr>28.05.&nbsp;Restmüll / Bioabfall<nobr>
-					<br>
+						<b>Mai 2020</b>
+						<br>
+						<nobr>(Sa) 23.05.&nbsp;Papier / G.Sack</nobr>
+						<br>
+						<nobr>28.05.&nbsp;Restmüll / Bioabfall</nobr>
+						<br>
 					</td>
-				<tr>`
+				</tr>`
 )
 
 func TestParseGarbageCollectionDates(t *testing.T) {

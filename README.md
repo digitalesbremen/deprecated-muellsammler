@@ -32,6 +32,7 @@ um Hausnummern anzuzeigen. Verwirrend und schwierig.
 * Ich muss mich in Regex immer erst wieder einarbeiten. Dann macht es aber Spaß.
 * Golang kann auch Funktionen als Übergabeparameter.
 * `go build`führt keine Tests aus. `go test` führt keine Tests in sub modules aus.
+* Feststellen, dass es `<nobr>28.05.&nbsp;Restmüll / Bioabfall</nobr>` zwar nicht valide ist, aber geliefert wird.
 
 ## Projekt
 
