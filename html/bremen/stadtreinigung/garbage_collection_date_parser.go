@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"log"
 	"regexp"
 	"strings"
 )
@@ -13,10 +12,6 @@ type GarageCollection struct {
 	Date string
 	Type string
 }
-
-var (
-	regex = regexp.MustCompile(`<nobr>.*([0-9]{2}.[0-9]{2}.)&nbsp;(.*)</nobr>`)
-)
 
 func ParseGarbageCollectionDates(content string) []GarageCollection {
 	dates := make([]GarageCollection, 0)
@@ -33,7 +28,7 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 		Value string `xml:",innerxml"`
 	}
 
-	var b B
+	actualYear := ``
 
 	for {
 		token, tokenErr := decoder.Token()
@@ -47,35 +42,30 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 
 		switch startElement := token.(type) {
 		case xml.StartElement:
-			if b.Value == `` {
-				if startElement.Name.Local == `b` {
-					_ = decoder.DecodeElement(&b, &startElement)
-					if !regexp.MustCompile(`[0-9]{4}`).MatchString(b.Value) {
-						b.Value = ``
-					}
+			if startElement.Name.Local == `b` {
+				var b B
+				_ = decoder.DecodeElement(&b, &startElement)
+				matchedYear := regexp.MustCompile(`([0-9]{4})`).FindStringSubmatch(b.Value)
+
+				if len(matchedYear) == 2 {
+					actualYear = matchedYear[1]
 				}
-			} else if startElement.Name.Local == `nobr` {
+			}
+
+			if actualYear != `` && startElement.Name.Local == `nobr` {
 				var nobr Nobr
 				_ = decoder.DecodeElement(&nobr, &startElement)
 
 				submatch := regexp.MustCompile(`([0-9]{2}.[0-9]{2})\.&nbsp;(.*)`).FindStringSubmatch(nobr.Value)
 
 				if len(submatch) == 3 {
-					fmt.Printf(`%s.%s - %s`, submatch[1], b.Value, submatch[2])
+					fmt.Printf(`%s.%s - %s`, submatch[1], actualYear, submatch[2])
 					fmt.Println()
+
+					dates = append(dates, GarageCollection{submatch[1] + `.` + actualYear, submatch[2]})
 				}
 			}
 		}
-	}
-
-	matches := regex.FindAllStringSubmatch(content, -1)
-
-	for _, match := range matches {
-		if len(match) != 3 {
-			log.Fatal("Match size does not match", match)
-		}
-
-		dates = append(dates, GarageCollection{match[1], match[2]})
 	}
 
 	return dates

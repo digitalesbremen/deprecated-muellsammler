@@ -61,19 +61,19 @@ var (
 func TestParseGarbageCollectionDates(t *testing.T) {
 	collectionDates := ParseGarbageCollectionDates(collectionDateSample)
 
-	assertCollectionDate(t, collectionDates, 0, `05.07.`)
+	assertCollectionDate(t, collectionDates, 0, `05.07.2018`)
 	assertCollectionType(t, collectionDates, 0, `Papier / Gelber Sack`)
-	assertCollectionDate(t, collectionDates, 1, `12.07.`)
+	assertCollectionDate(t, collectionDates, 1, `12.07.2018`)
 	assertCollectionType(t, collectionDates, 1, `Restmüll / Bioabfall`)
-	assertCollectionDate(t, collectionDates, 2, `01.06.`)
+	assertCollectionDate(t, collectionDates, 2, `01.06.2019`)
 	assertCollectionType(t, collectionDates, 2, `Restm. / Bioabf.`)
-	assertCollectionDate(t, collectionDates, 3, `06.06.`)
+	assertCollectionDate(t, collectionDates, 3, `06.06.2019`)
 	assertCollectionType(t, collectionDates, 3, `Papier / Gelber Sack`)
-	assertCollectionDate(t, collectionDates, 4, `11.01.`)
+	assertCollectionDate(t, collectionDates, 4, `11.01.2020`)
 	assertCollectionType(t, collectionDates, 4, `Tannenbaumabfuhr`)
-	assertCollectionDate(t, collectionDates, 5, `23.05.`)
+	assertCollectionDate(t, collectionDates, 5, `23.05.2020`)
 	assertCollectionType(t, collectionDates, 5, `Papier / G.Sack`)
-	assertCollectionDate(t, collectionDates, 6, `28.05.`)
+	assertCollectionDate(t, collectionDates, 6, `28.05.2020`)
 	assertCollectionType(t, collectionDates, 6, `Restmüll / Bioabfall`)
 }
 
