@@ -10,8 +10,18 @@ import (
 
 type GarageCollection struct {
 	Date string
-	Type string
+	Type []Type
 }
+
+type Type int
+
+const (
+	YellowBag     Type = iota
+	ResidualWaste Type = iota
+	BioWaste      Type = iota
+	PaperWaste    Type = iota
+	ChristmasTree Type = iota
+)
 
 func ParseGarbageCollectionDates(content string) []GarageCollection {
 	dates := make([]GarageCollection, 0)
@@ -62,11 +72,37 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 					fmt.Printf(`%s.%s - %s`, submatch[1], actualYear, submatch[2])
 					fmt.Println()
 
-					dates = append(dates, GarageCollection{submatch[1] + `.` + actualYear, submatch[2]})
+					dates = append(dates, GarageCollection{submatch[1] + `.` + actualYear, mapWasteStrings(submatch[2])})
 				}
 			}
 		}
 	}
 
 	return dates
+}
+
+func mapWasteStrings(waste string) []Type {
+	types := make([]Type, 0)
+
+	if strings.Contains(waste, `Papier`) {
+		types = append(types, PaperWaste)
+	}
+
+	if strings.Contains(waste, `Gelber Sack`) || strings.Contains(waste, `G.Sack`) {
+		types = append(types, YellowBag)
+	}
+
+	if strings.Contains(waste, `Tannenbaum`) {
+		types = append(types, ChristmasTree)
+	}
+
+	if strings.Contains(waste, `Restm`) {
+		types = append(types, ResidualWaste)
+	}
+
+	if strings.Contains(waste, `Bioabf`) {
+		types = append(types, BioWaste)
+	}
+
+	return types
 }

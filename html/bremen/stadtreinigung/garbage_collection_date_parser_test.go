@@ -62,19 +62,19 @@ func TestParseGarbageCollectionDates(t *testing.T) {
 	collectionDates := ParseGarbageCollectionDates(collectionDateSample)
 
 	assertCollectionDate(t, collectionDates, 0, `05.07.2018`)
-	assertCollectionType(t, collectionDates, 0, `Papier / Gelber Sack`)
+	assertCollectionType(t, collectionDates, 0, YellowBag, PaperWaste)
 	assertCollectionDate(t, collectionDates, 1, `12.07.2018`)
-	assertCollectionType(t, collectionDates, 1, `Restmüll / Bioabfall`)
+	assertCollectionType(t, collectionDates, 1, ResidualWaste, BioWaste)
 	assertCollectionDate(t, collectionDates, 2, `01.06.2019`)
-	assertCollectionType(t, collectionDates, 2, `Restm. / Bioabf.`)
+	assertCollectionType(t, collectionDates, 2, ResidualWaste, BioWaste)
 	assertCollectionDate(t, collectionDates, 3, `06.06.2019`)
-	assertCollectionType(t, collectionDates, 3, `Papier / Gelber Sack`)
+	assertCollectionType(t, collectionDates, 3, PaperWaste, YellowBag)
 	assertCollectionDate(t, collectionDates, 4, `11.01.2020`)
-	assertCollectionType(t, collectionDates, 4, `Tannenbaumabfuhr`)
+	assertCollectionType(t, collectionDates, 4, ChristmasTree)
 	assertCollectionDate(t, collectionDates, 5, `23.05.2020`)
-	assertCollectionType(t, collectionDates, 5, `Papier / G.Sack`)
+	assertCollectionType(t, collectionDates, 5, PaperWaste, YellowBag)
 	assertCollectionDate(t, collectionDates, 6, `28.05.2020`)
-	assertCollectionType(t, collectionDates, 6, `Restmüll / Bioabfall`)
+	assertCollectionType(t, collectionDates, 6, ResidualWaste, BioWaste)
 }
 
 func assertCollectionDate(t *testing.T, collectionDates []GarageCollection, index int, want string) {
@@ -83,8 +83,22 @@ func assertCollectionDate(t *testing.T, collectionDates []GarageCollection, inde
 	}
 }
 
-func assertCollectionType(t *testing.T, collectionDates []GarageCollection, index int, want string) {
-	if collectionDates[index].Type != want {
-		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type = %s; want %s`, index, collectionDates[index].Type, want)
+func assertCollectionType(t *testing.T, collectionDates []GarageCollection, index int, want ...Type) {
+	if len(collectionDates[index].Type) != len(want) {
+		t.Errorf(`len(ParseGarbageCollectionDates(sample)[%d].Type) = %d; want %d`, index, len(collectionDates[index].Type), len(want))
 	}
+	for _, wantType := range want {
+		if !contains(collectionDates[index].Type, wantType) {
+			t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type does not contain %d`, index, int(wantType))
+		}
+	}
+}
+
+func contains(s []Type, e Type) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
