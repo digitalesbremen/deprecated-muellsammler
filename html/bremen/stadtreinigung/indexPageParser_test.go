@@ -11,8 +11,8 @@ var (
 				<td id="A" class = "BAKChr">
 					<a href="strasse.jsp?strasse=A">A</a>
 				</td>
-    		  	<td id="B" class = "BAKChr">
-					<a href="strasse.jsp?strasse=B">B</a>
+    		  	<td id="Tag" class = "BAKChr">
+					<a href="strasse.jsp?strasse=Tag">Tag</a>
 				</td>
 				<td id="" class = "BAKChr"></td>
     		  	<td id="AE" class = "BAKChr" align="center">
@@ -38,8 +38,8 @@ func TestParseIndexPage(t *testing.T) {
 
 	assertFirstLetterValue(t, firstLetters, 0, `A`)
 	assertFirstLetterUrlUrl(t, firstLetters, 0, `www.test.url/strasse.jsp?strasse=A`)
-	assertFirstLetterValue(t, firstLetters, 1, `B`)
-	assertFirstLetterUrlUrl(t, firstLetters, 1, `www.test.url/strasse.jsp?strasse=B`)
+	assertFirstLetterValue(t, firstLetters, 1, `Tag`)
+	assertFirstLetterUrlUrl(t, firstLetters, 1, `www.test.url/strasse.jsp?strasse=Tag`)
 	assertFirstLetterValue(t, firstLetters, 2, `Ä`)
 	assertFirstLetterUrlUrl(t, firstLetters, 2, `www.test.url/strasse.jsp?strasse=%C4`)
 	assertFirstLetterValue(t, firstLetters, 3, `Ü`)

@@ -79,22 +79,22 @@ func TestParseGarbageCollectionDates(t *testing.T) {
 
 func assertCollectionDate(t *testing.T, collectionDates []GarageCollection, index int, want string) {
 	if collectionDates[index].Date != want {
-		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type = %s; want %s`, index, collectionDates[index].Date, want)
+		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].WasteType = %s; want %s`, index, collectionDates[index].Date, want)
 	}
 }
 
-func assertCollectionType(t *testing.T, collectionDates []GarageCollection, index int, want ...Type) {
+func assertCollectionType(t *testing.T, collectionDates []GarageCollection, index int, want ...WasteType) {
 	if len(collectionDates[index].Type) != len(want) {
-		t.Errorf(`len(ParseGarbageCollectionDates(sample)[%d].Type) = %d; want %d`, index, len(collectionDates[index].Type), len(want))
+		t.Errorf(`len(ParseGarbageCollectionDates(sample)[%d].WasteType) = %d; want %d`, index, len(collectionDates[index].Type), len(want))
 	}
 	for _, wantType := range want {
 		if !contains(collectionDates[index].Type, wantType) {
-			t.Errorf(`ParseGarbageCollectionDates(sample)[%d].Type does not contain %d`, index, int(wantType))
+			t.Errorf(`ParseGarbageCollectionDates(sample)[%d].WasteType does not contain %d`, index, int(wantType))
 		}
 	}
 }
 
-func contains(s []Type, e Type) bool {
+func contains(s []WasteType, e WasteType) bool {
 	for _, a := range s {
 		if a == e {
 			return true

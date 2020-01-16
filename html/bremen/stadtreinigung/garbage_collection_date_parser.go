@@ -10,17 +10,17 @@ import (
 
 type GarageCollection struct {
 	Date string
-	Type []Type
+	Type []WasteType
 }
 
-type Type int
+type WasteType int
 
 const (
-	YellowBag     Type = iota
-	ResidualWaste Type = iota
-	BioWaste      Type = iota
-	PaperWaste    Type = iota
-	ChristmasTree Type = iota
+	YellowBag     WasteType = iota
+	ResidualWaste WasteType = iota
+	BioWaste      WasteType = iota
+	PaperWaste    WasteType = iota
+	ChristmasTree WasteType = iota
 )
 
 func ParseGarbageCollectionDates(content string) []GarageCollection {
@@ -30,11 +30,7 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 	decoder.Strict = false
 	decoder.AutoClose = xml.HTMLAutoClose
 
-	type B struct {
-		Value string `xml:",innerxml"`
-	}
-
-	type Nobr struct {
+	type Tag struct {
 		Value string `xml:",innerxml"`
 	}
 
@@ -52,27 +48,23 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 
 		switch startElement := token.(type) {
 		case xml.StartElement:
-			if startElement.Name.Local == `b` {
-				var b B
-				_ = decoder.DecodeElement(&b, &startElement)
-				matchedYear := regexp.MustCompile(`([0-9]{4})`).FindStringSubmatch(b.Value)
+			if startsWithNewYear(startElement) {
+				var tag Tag
+				_ = decoder.DecodeElement(&tag, &startElement)
+				matchedYear := regexp.MustCompile(`([0-9]{4})`).FindStringSubmatch(tag.Value)
 
 				if len(matchedYear) == 2 {
 					actualYear = matchedYear[1]
 				}
 			}
 
-			if actualYear != `` && startElement.Name.Local == `nobr` {
-				var nobr Nobr
-				_ = decoder.DecodeElement(&nobr, &startElement)
+			if startsWithNewWasteEntry(actualYear, startElement) {
+				var tag Tag
+				_ = decoder.DecodeElement(&tag, &startElement)
+				matchesWasteEntry := regexp.MustCompile(`([0-9]{2}.[0-9]{2})\.&nbsp;(.*)`).FindStringSubmatch(tag.Value)
 
-				submatch := regexp.MustCompile(`([0-9]{2}.[0-9]{2})\.&nbsp;(.*)`).FindStringSubmatch(nobr.Value)
-
-				if len(submatch) == 3 {
-					fmt.Printf(`%s.%s - %s`, submatch[1], actualYear, submatch[2])
-					fmt.Println()
-
-					dates = append(dates, GarageCollection{submatch[1] + `.` + actualYear, mapWasteStrings(submatch[2])})
+				if len(matchesWasteEntry) == 3 {
+					dates = append(dates, GarageCollection{matchesWasteEntry[1] + `.` + actualYear, mapWasteStrings(matchesWasteEntry[2])})
 				}
 			}
 		}
@@ -81,8 +73,16 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 	return dates
 }
 
-func mapWasteStrings(waste string) []Type {
-	types := make([]Type, 0)
+func startsWithNewYear(startElement xml.StartElement) bool {
+	return startElement.Name.Local == `b`
+}
+
+func startsWithNewWasteEntry(actualYear string, startElement xml.StartElement) bool {
+	return actualYear != `` && startElement.Name.Local == `nobr`
+}
+
+func mapWasteStrings(waste string) []WasteType {
+	types := make([]WasteType, 0)
 
 	if strings.Contains(waste, `Papier`) {
 		types = append(types, PaperWaste)
