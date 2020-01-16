@@ -23,6 +23,11 @@ const (
 	ChristmasTree WasteType = iota
 )
 
+var (
+	yearHtmlTagRegex       = regexp.MustCompile(`([0-9]{4})`)
+	wasteEntryHtmlTagRegex = regexp.MustCompile(`([0-9]{2}.[0-9]{2})\.&nbsp;(.*)`)
+)
+
 func ParseGarbageCollectionDates(content string) []GarageCollection {
 	dates := make([]GarageCollection, 0)
 
@@ -49,9 +54,7 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 		switch startElement := token.(type) {
 		case xml.StartElement:
 			if startsWithNewYear(startElement) {
-				var tag Tag
-				_ = decoder.DecodeElement(&tag, &startElement)
-				matchedYear := regexp.MustCompile(`([0-9]{4})`).FindStringSubmatch(tag.Value)
+				matchedYear := decodeHtmlTagInnerValue(decoder, startElement, yearHtmlTagRegex)
 
 				if len(matchedYear) == 2 {
 					actualYear = matchedYear[1]
@@ -59,9 +62,7 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 			}
 
 			if startsWithNewWasteEntry(actualYear, startElement) {
-				var tag Tag
-				_ = decoder.DecodeElement(&tag, &startElement)
-				matchesWasteEntry := regexp.MustCompile(`([0-9]{2}.[0-9]{2})\.&nbsp;(.*)`).FindStringSubmatch(tag.Value)
+				matchesWasteEntry := decodeHtmlTagInnerValue(decoder, startElement, wasteEntryHtmlTagRegex)
 
 				if len(matchesWasteEntry) == 3 {
 					dates = append(dates, GarageCollection{matchesWasteEntry[1] + `.` + actualYear, mapWasteStrings(matchesWasteEntry[2])})
@@ -71,6 +72,16 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 	}
 
 	return dates
+}
+
+func decodeHtmlTagInnerValue(decoder *xml.Decoder, startElement xml.StartElement, regex *regexp.Regexp) []string {
+	type Tag struct {
+		Value string `xml:",innerxml"`
+	}
+
+	var tag Tag
+	_ = decoder.DecodeElement(&tag, &startElement)
+	return regex.FindStringSubmatch(tag.Value)
 }
 
 func startsWithNewYear(startElement xml.StartElement) bool {
