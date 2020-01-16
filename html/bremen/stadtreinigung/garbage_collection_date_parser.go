@@ -6,10 +6,11 @@ import (
 	"io"
 	"regexp"
 	"strings"
+	"time"
 )
 
 type GarageCollection struct {
-	Date string
+	Date time.Time
 	Type []WasteType
 }
 
@@ -65,13 +66,18 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 				matchesWasteEntry := decodeHtmlTagInnerValue(decoder, startElement, wasteEntryHtmlTagRegex)
 
 				if len(matchesWasteEntry) == 3 {
-					dates = append(dates, GarageCollection{matchesWasteEntry[1] + `.` + actualYear, mapWasteStrings(matchesWasteEntry[2])})
+					dates = append(dates, GarageCollection{parseDate(matchesWasteEntry[1] + `.` + actualYear), mapWasteStrings(matchesWasteEntry[2])})
 				}
 			}
 		}
 	}
 
 	return dates
+}
+
+func parseDate(value string) time.Time {
+	parse, _ := time.Parse(`02.01.2006`, value)
+	return parse
 }
 
 func decodeHtmlTagInnerValue(decoder *xml.Decoder, startElement xml.StartElement, regex *regexp.Regexp) []string {

@@ -2,6 +2,7 @@ package stadtreinigung
 
 import (
 	"testing"
+	"time"
 )
 
 var (
@@ -61,23 +62,23 @@ var (
 func TestParseGarbageCollectionDates(t *testing.T) {
 	collectionDates := ParseGarbageCollectionDates(collectionDateSample)
 
-	assertCollectionDate(t, collectionDates, 0, `05.07.2018`)
+	assertCollectionDate(t, collectionDates, 0, time.Date(2018, 07, 05, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 0, YellowBag, PaperWaste)
-	assertCollectionDate(t, collectionDates, 1, `12.07.2018`)
+	assertCollectionDate(t, collectionDates, 1, time.Date(2018, 07, 12, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 1, ResidualWaste, BioWaste)
-	assertCollectionDate(t, collectionDates, 2, `01.06.2019`)
+	assertCollectionDate(t, collectionDates, 2, time.Date(2019, 06, 01, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 2, ResidualWaste, BioWaste)
-	assertCollectionDate(t, collectionDates, 3, `06.06.2019`)
+	assertCollectionDate(t, collectionDates, 3, time.Date(2019, 06, 06, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 3, PaperWaste, YellowBag)
-	assertCollectionDate(t, collectionDates, 4, `11.01.2020`)
+	assertCollectionDate(t, collectionDates, 4, time.Date(2020, 01, 11, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 4, ChristmasTree)
-	assertCollectionDate(t, collectionDates, 5, `23.05.2020`)
+	assertCollectionDate(t, collectionDates, 5, time.Date(2020, 05, 23, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 5, PaperWaste, YellowBag)
-	assertCollectionDate(t, collectionDates, 6, `28.05.2020`)
+	assertCollectionDate(t, collectionDates, 6, time.Date(2020, 05, 28, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 6, ResidualWaste, BioWaste)
 }
 
-func assertCollectionDate(t *testing.T, collectionDates []GarageCollection, index int, want string) {
+func assertCollectionDate(t *testing.T, collectionDates []GarageCollection, index int, want time.Time) {
 	if collectionDates[index].Date != want {
 		t.Errorf(`ParseGarbageCollectionDates(sample)[%d].WasteType = %s; want %s`, index, collectionDates[index].Date, want)
 	}
