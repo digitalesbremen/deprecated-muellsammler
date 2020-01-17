@@ -1,0 +1,19 @@
+{
+ "Street": "Teststr.",
+ "HouseNumber": "15a",
+ "CollectionDates": [
+  {
+   "Date": "2018-07-05",
+   "Types": [
+    "YellowBag",
+    "PaperWaste"
+   ]
+  },
+  {
+   "Date": "2020-01-11",
+   "Types": [
+    "ChristmasTree"
+   ]
+  }
+ ]
+}
