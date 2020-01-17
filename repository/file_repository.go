@@ -33,6 +33,10 @@ func (t *JSONTime) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+type Addresses struct {
+	Addresses []Address
+}
+
 type Address struct {
 	Street          string
 	HouseNumber     string
@@ -45,17 +49,30 @@ type GarbageCollectionDate struct {
 }
 
 func write() {
-	data := Address{
-		Street:      "Teststr.",
-		HouseNumber: "15a",
-		CollectionDates: []GarbageCollectionDate{
+	data := Addresses{
+		Addresses: []Address{
 			{
-				Date:  JSONTime{time.Date(2018, 07, 05, 0, 0, 0, 0, time.UTC)},
-				Types: []string{"YellowBag", "PaperWaste"},
-			},
-			{
-				Date:  JSONTime{time.Date(2020, 01, 11, 0, 0, 0, 0, time.UTC)},
-				Types: []string{"ChristmasTree"},
+				Street:      "Teststr.",
+				HouseNumber: "15a",
+				CollectionDates: []GarbageCollectionDate{
+					{
+						Date:  JSONTime{time.Date(2018, 07, 05, 0, 0, 0, 0, time.UTC)},
+						Types: []string{"YellowBag", "PaperWaste"},
+					},
+					{
+						Date:  JSONTime{time.Date(2020, 01, 11, 0, 0, 0, 0, time.UTC)},
+						Types: []string{"ChristmasTree"},
+					},
+				},
+			}, {
+				Street:      "Teststr.",
+				HouseNumber: "17",
+				CollectionDates: []GarbageCollectionDate{
+					{
+						Date:  JSONTime{time.Date(2020, 05, 23, 0, 0, 0, 0, time.UTC)},
+						Types: []string{"YellowBag", "PaperWaste"},
+					},
+				},
 			},
 		},
 	}
@@ -66,7 +83,7 @@ func write() {
 
 	readFile, _ := ioutil.ReadFile("../test.json")
 
-	var address Address
-	_ = json.Unmarshal(readFile, &address)
-	fmt.Println(address)
+	var addresses Addresses
+	_ = json.Unmarshal(readFile, &addresses)
+	fmt.Println(addresses)
 }
