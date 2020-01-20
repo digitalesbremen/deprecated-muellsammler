@@ -8,9 +8,11 @@ import (
 	"time"
 )
 
+const filePath = `../test.json`
+
 type Marshaler interface {
 	MarshalJSON() ([]byte, error)
-	UnmarshalJSON(b []byte) error
+	UnmarsalJSON(b []byte) error
 }
 
 type JSONTime struct {
@@ -48,42 +50,20 @@ type GarbageCollectionDate struct {
 	Types []string
 }
 
-func write() {
-	data := Addresses{
-		Addresses: []Address{
-			{
-				Street:      "Teststr.",
-				HouseNumber: "15a",
-				CollectionDates: []GarbageCollectionDate{
-					{
-						Date:  JSONTime{time.Date(2018, 07, 05, 0, 0, 0, 0, time.UTC)},
-						Types: []string{"YellowBag", "PaperWaste"},
-					},
-					{
-						Date:  JSONTime{time.Date(2020, 01, 11, 0, 0, 0, 0, time.UTC)},
-						Types: []string{"ChristmasTree"},
-					},
-				},
-			}, {
-				Street:      "Teststr.",
-				HouseNumber: "17",
-				CollectionDates: []GarbageCollectionDate{
-					{
-						Date:  JSONTime{time.Date(2020, 05, 23, 0, 0, 0, 0, time.UTC)},
-						Types: []string{"YellowBag", "PaperWaste"},
-					},
-				},
-			},
-		},
-	}
-
+func save(data Addresses) {
 	file, _ := json.MarshalIndent(data, "", " ")
 
-	_ = ioutil.WriteFile("../test.json", file, 0644)
+	_ = ioutil.WriteFile(filePath, file, 0644)
+}
 
-	readFile, _ := ioutil.ReadFile("../test.json")
-
+func findAll() Addresses {
 	var addresses Addresses
-	_ = json.Unmarshal(readFile, &addresses)
-	fmt.Println(addresses)
+
+	readFile, err := ioutil.ReadFile(filePath)
+
+	if err == nil {
+		_ = json.Unmarshal(readFile, &addresses)
+	}
+
+	return addresses
 }
