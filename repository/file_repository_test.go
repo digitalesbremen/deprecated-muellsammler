@@ -34,7 +34,7 @@ func TestSave(t *testing.T) {
 		},
 	}
 
-	save(data)
+	Save(data)
 }
 
 func TestRead(t *testing.T) {
