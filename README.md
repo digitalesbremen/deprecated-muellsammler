@@ -47,6 +47,7 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 * Zu jedem Anfangsbuchstaben werden alle (ca 3700) Straßen geladen.
 * Zu jeder Straße werden alle (ca 130000) Hausnummern geladen.
 * Eine Progressbar im Log gibt den Ladezustand an. 
+* Die Abholzeiten werden geladen
 
 ### Anforderungen
 
