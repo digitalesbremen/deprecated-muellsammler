@@ -19,7 +19,7 @@ type Client struct {
 func NewClient() *Client {
 	client := Client{
 		Timeout:               1 * time.Second,
-		RetryTimeAfterTimeout: 10 * time.Second,
+		RetryTimeAfterTimeout: 5 * time.Second,
 	}
 	return &client
 }
@@ -39,7 +39,7 @@ func (c *Client) getContent(url string, maxRetries int, actualRetry int) (conten
 		if actualRetry < maxRetries {
 			actualRetry++
 			fmt.Println()
-			fmt.Printf(`Timeout while loading '%s'. Retry in 10 seconds. Try %d of %d`, url, actualRetry, maxRetries)
+			fmt.Printf(`Timeout while loading '%s'. Retry in 5 seconds. Try %d of %d`, url, actualRetry, maxRetries)
 			fmt.Println()
 			time.Sleep(c.RetryTimeAfterTimeout)
 			return c.getContent(url, maxRetries, actualRetry)
@@ -59,7 +59,7 @@ func (c *Client) getContent(url string, maxRetries int, actualRetry int) (conten
 			if actualRetry < maxRetries {
 				actualRetry++
 				fmt.Println()
-				fmt.Printf(`Error while reading body. Retry in 10 seconds. Try %d of %d`, actualRetry, maxRetries)
+				fmt.Printf(`Error while reading body. Retry in 5 seconds. Try %d of %d`, actualRetry, maxRetries)
 				fmt.Println()
 				time.Sleep(c.RetryTimeAfterTimeout)
 				return c.getContent(url, maxRetries, actualRetry)

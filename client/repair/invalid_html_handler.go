@@ -27,7 +27,11 @@ func RepairInvalidHtml(html string) string {
 	repairedHtml = strings.ReplaceAll(repairedHtml, "<h2>", "<h3>")
 	repairedHtml = strings.ReplaceAll(repairedHtml, "</h2>", "</h3>")
 
+	// -- not valid in comments
 	repairedHtml = strings.ReplaceAll(repairedHtml, " -- ", " ")
+
+	// width="0 without close quote... :/
+	repairedHtml = strings.ReplaceAll(repairedHtml, ` width="0 `, ` width="0" `)
 
 	return repairedHtml
 }
