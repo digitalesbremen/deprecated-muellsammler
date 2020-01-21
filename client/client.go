@@ -25,6 +25,10 @@ func NewClient() *Client {
 }
 
 func (c *Client) GetContent(url string) (content string, err error) {
+	return c.getContent(url, 10, 0)
+}
+
+func (c *Client) getContent(url string, maxRetries int, actualRetry int) (content string, err error) {
 	client := http.Client{
 		Timeout: c.Timeout,
 	}
@@ -32,14 +36,14 @@ func (c *Client) GetContent(url string) (content string, err error) {
 	resp, err := client.Get(url)
 
 	if err != nil {
-		fmt.Println()
-		fmt.Printf(`Timeout while loading '%s'. Retry in 10 seconds.`, url)
-		fmt.Println()
-		time.Sleep(c.RetryTimeAfterTimeout)
-
-		resp, err = client.Get(url)
-
-		if err != nil {
+		if actualRetry < maxRetries {
+			actualRetry++
+			fmt.Println()
+			fmt.Printf(`Timeout while loading '%s'. Retry in 10 seconds. Try %d of %d`, url, actualRetry, maxRetries)
+			fmt.Println()
+			time.Sleep(c.RetryTimeAfterTimeout)
+			return c.getContent(url, maxRetries, actualRetry)
+		} else {
 			return "", err
 		}
 	}
@@ -52,7 +56,16 @@ func (c *Client) GetContent(url string) (content string, err error) {
 		body, err := ioutil.ReadAll(reader)
 
 		if err != nil {
-			return "", err
+			if actualRetry < maxRetries {
+				actualRetry++
+				fmt.Println()
+				fmt.Printf(`Error while reading body. Retry in 10 seconds. Try %d of %d`, actualRetry, maxRetries)
+				fmt.Println()
+				time.Sleep(c.RetryTimeAfterTimeout)
+				return c.getContent(url, maxRetries, actualRetry)
+			} else {
+				return "", err
+			}
 		}
 
 		content := string(body)
