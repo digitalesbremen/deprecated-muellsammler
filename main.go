@@ -8,6 +8,7 @@ import (
 	"bremen_trash/html/bremen/stadtreinigung"
 	"bremen_trash/html/bremen/stadtreinigung/parser"
 	"bremen_trash/progressbar"
+	"bremen_trash/repository"
 )
 
 var (
@@ -57,6 +58,8 @@ func main() {
 
 	bar.Finish("%d house numbers loaded", len(garbageCollectionUrls))
 
+	addresses := make([]repository.Address, 0)
+
 	fmt.Println("Loading garbage collection dates")
 	bar = progressbar.NewProgressBar(len(garbageCollectionUrls))
 	dates := 0
@@ -64,8 +67,56 @@ func main() {
 		gcd := loadDates(garbageCollectionUrl.GarbageCollectionUrl)
 		bar.Add(1)
 		dates = dates + len(gcd)
+
+		addresses = append(addresses, repository.Address{
+			Street:          garbageCollectionUrl.Street,
+			HouseNumber:     garbageCollectionUrl.HouseNumber,
+			CollectionDates: mapGarbageCollections(gcd),
+		})
 	}
 	bar.Finish("%d garbage collection dates loaded", dates)
+
+	fmt.Println("Write collection dates to file")
+
+	repository.Save(repository.Addresses{addresses})
+
+	fmt.Println("Collection dates written to file")
+}
+
+func mapGarbageCollections(garbageCollections []stadtreinigung.GarageCollection) []repository.GarbageCollectionDate {
+	dates := make([]repository.GarbageCollectionDate, 0)
+
+	for _, garbageCollection := range garbageCollections {
+		date := repository.GarbageCollectionDate{
+			Date:  repository.JSONTime{garbageCollection.Date},
+			Types: mapGarbageTypes(garbageCollection.Type),
+		}
+
+		dates = append(dates, date)
+	}
+
+	return dates
+}
+
+func mapGarbageTypes(garbageTypes []stadtreinigung.WasteType) []string {
+	types := make([]string, 0)
+
+	for _, garbageType := range garbageTypes {
+		switch garbageType {
+		case stadtreinigung.YellowBag:
+			types = append(types, "Gelber Sack")
+		case stadtreinigung.ResidualWaste:
+			types = append(types, `Restmüll`)
+		case stadtreinigung.BioWaste:
+			types = append(types, `Bio`)
+		case stadtreinigung.PaperWaste:
+			types = append(types, `Papier`)
+		case stadtreinigung.ChristmasTree:
+			types = append(types, `Weihnachtsbaum`)
+		}
+	}
+
+	return types
 }
 
 func loadDates(garbageCollectionUrl string) []stadtreinigung.GarageCollection {

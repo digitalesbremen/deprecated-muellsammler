@@ -50,13 +50,13 @@ type GarbageCollectionDate struct {
 	Types []string
 }
 
-func save(data Addresses) {
+func Save(data Addresses) {
 	file, _ := json.MarshalIndent(data, "", " ")
 
 	_ = ioutil.WriteFile(filePath, file, 0644)
 }
 
-func findAll() Addresses {
+func FindAll() Addresses {
 	var addresses Addresses
 
 	readFile, err := ioutil.ReadFile(filePath)
