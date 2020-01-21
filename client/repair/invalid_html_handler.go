@@ -27,5 +27,7 @@ func RepairInvalidHtml(html string) string {
 	repairedHtml = strings.ReplaceAll(repairedHtml, "<h2>", "<h3>")
 	repairedHtml = strings.ReplaceAll(repairedHtml, "</h2>", "</h3>")
 
+	repairedHtml = strings.ReplaceAll(repairedHtml, " -- ", " ")
+
 	return repairedHtml
 }
