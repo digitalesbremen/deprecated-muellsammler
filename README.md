@@ -34,6 +34,7 @@ um Hausnummern anzuzeigen. Verwirrend und schwierig.
 * `go build`führt keine Tests aus. `go test` führt keine Tests in sub modules aus.
 * Feststellen, dass es `<nobr>28.05.&nbsp;Restmüll / Bioabfall</nobr>` zwar nicht valide ist, aber geliefert wird.
 * Warum hat golang kein LocalDate?
+* `width=60%` ist ein Problem, dass generell per Regex lösbar ist. Jetzt gibt es aber auch `width="0`. Da wird es mit einem generellem Regex interessant.
 
 ## Projekt
 
