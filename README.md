@@ -35,7 +35,6 @@ um Hausnummern anzuzeigen. Verwirrend und schwierig.
 * Feststellen, dass es `<nobr>28.05.&nbsp;Restmüll / Bioabfall</nobr>` zwar nicht valide ist, aber geliefert wird.
 * Warum hat golang kein LocalDate?
 * `width=60%` ist ein Problem, dass generell per Regex lösbar ist. Jetzt gibt es aber auch `width="0`. Da wird es mit einem generellem Regex interessant.
-* Ein erster Import ist durch. Knapp 4,5 Stunden hat es gedauert. Ergebnis ist ein JSON-File von ca 1GB Größe.
 
 ## Projekt
 
@@ -49,6 +48,7 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 * Zu jeder Straße werden alle (ca 130000) Hausnummern geladen.
 * Eine Progressbar im Log gibt den Ladezustand an. 
 * Die Abholzeiten werden geladen
+* Ein erster Import ist durch. Knapp 4,5 Stunden hat es gedauert. Ergebnis ist ein JSON-File von ca 1GB Größe.
 
 ### Anforderungen
 
