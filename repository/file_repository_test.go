@@ -34,7 +34,7 @@ func TestSave(t *testing.T) {
 		},
 	}
 
-	Save(data)
+	Save(data, `../test.json`)
 }
 
 func TestRead(t *testing.T) {

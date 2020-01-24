@@ -79,7 +79,9 @@ func main() {
 
 	fmt.Println("Write collection dates to file")
 
-	repository.Save(repository.Addresses{addresses})
+	fileName := time.Now().Format("2006-01-02") + ".json"
+
+	repository.Save(repository.Addresses{Addresses: addresses}, fileName)
 
 	fmt.Println("Collection dates written to file")
 }

@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-const filePath = `../test.json`
-
 type Marshaler interface {
 	MarshalJSON() ([]byte, error)
 	UnmarsalJSON(b []byte) error
@@ -50,16 +48,16 @@ type GarbageCollectionDate struct {
 	Types []string
 }
 
-func Save(data Addresses) {
+func Save(data Addresses, fullQualifiedFileName string) {
 	file, _ := json.MarshalIndent(data, "", " ")
 
-	_ = ioutil.WriteFile(filePath, file, 0644)
+	_ = ioutil.WriteFile(fullQualifiedFileName, file, 0644)
 }
 
-func FindAll() Addresses {
+func FindAll(fullQualifiedFileName string) Addresses {
 	var addresses Addresses
 
-	readFile, err := ioutil.ReadFile(filePath)
+	readFile, err := ioutil.ReadFile(fullQualifiedFileName)
 
 	if err == nil {
 		_ = json.Unmarshal(readFile, &addresses)
