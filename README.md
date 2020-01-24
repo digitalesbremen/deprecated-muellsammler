@@ -49,6 +49,7 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 * Eine Progressbar im Log gibt den Ladezustand an. 
 * Die Abholzeiten werden geladen
 * Ein erster Import ist durch. Knapp 4,5 Stunden hat es gedauert. Ergebnis ist ein JSON-File von ca 1GB Größe.
+* Ein zweiter Import benötigt knapp 3,5 Stunden. Hier werden nur die zukünftigen Daten gesammelt. Das JSON-File ist entsprechend nur 200MB groß.
 
 ### Anforderungen
 

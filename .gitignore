@@ -1,6 +1,6 @@
 ### GO ###
 bremen_trash
-test.json
+*.json
 
 ### STS ###
 .apt_generated
