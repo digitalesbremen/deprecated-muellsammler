@@ -60,7 +60,7 @@ var (
 )
 
 func TestParseGarbageCollectionDates(t *testing.T) {
-	collectionDates := ParseGarbageCollectionDates(collectionDateSample)
+	collectionDates := ParseGarbageCollectionDates(collectionDateSample, time.Date(2018, 07, 04, 0, 0, 0, 0, time.UTC))
 
 	assertCollectionDate(t, collectionDates, 0, time.Date(2018, 07, 05, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 0, YellowBag, PaperWaste)
@@ -76,6 +76,15 @@ func TestParseGarbageCollectionDates(t *testing.T) {
 	assertCollectionType(t, collectionDates, 5, PaperWaste, YellowBag)
 	assertCollectionDate(t, collectionDates, 6, time.Date(2020, 05, 28, 0, 0, 0, 0, time.UTC))
 	assertCollectionType(t, collectionDates, 6, ResidualWaste, BioWaste)
+}
+
+func TestParseGarbageCollectionDatesWithIgnoreOlderDates(t *testing.T) {
+	collectionDates := ParseGarbageCollectionDates(collectionDateSample, time.Date(2020, 01, 11, 0, 0, 0, 0, time.UTC))
+
+	assertCollectionDate(t, collectionDates, 0, time.Date(2020, 05, 23, 0, 0, 0, 0, time.UTC))
+	assertCollectionType(t, collectionDates, 0, PaperWaste, YellowBag)
+	assertCollectionDate(t, collectionDates, 1, time.Date(2020, 05, 28, 0, 0, 0, 0, time.UTC))
+	assertCollectionType(t, collectionDates, 1, ResidualWaste, BioWaste)
 }
 
 func assertCollectionDate(t *testing.T, collectionDates []GarageCollection, index int, want time.Time) {

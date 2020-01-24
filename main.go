@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"bremen_trash/client"
 	"bremen_trash/html/bremen/stadtreinigung"
@@ -130,7 +131,7 @@ func loadDates(garbageCollectionUrl string) []stadtreinigung.GarageCollection {
 		log.Fatal(`Dates content is empty. Url: `, garbageCollectionUrl)
 	}
 
-	return stadtreinigung.ParseGarbageCollectionDates(garbageContent)
+	return stadtreinigung.ParseGarbageCollectionDates(garbageContent, time.Now())
 }
 
 func loadStreets(firstLetters []parser.Dto, bar *progressbar.ProgressBar) []parser.Dto {

@@ -29,7 +29,7 @@ var (
 	wasteEntryHtmlTagRegex = regexp.MustCompile(`([0-9]{2}.[0-9]{2})\.&nbsp;(.*)`)
 )
 
-func ParseGarbageCollectionDates(content string) []GarageCollection {
+func ParseGarbageCollectionDates(content string, ignoreUntilDate time.Time) []GarageCollection {
 	dates := make([]GarageCollection, 0)
 
 	decoder := xml.NewDecoder(strings.NewReader(content))
@@ -66,7 +66,11 @@ func ParseGarbageCollectionDates(content string) []GarageCollection {
 				matchesWasteEntry := decodeHtmlTagInnerValue(decoder, startElement, wasteEntryHtmlTagRegex)
 
 				if len(matchesWasteEntry) == 3 {
-					dates = append(dates, GarageCollection{parseDate(matchesWasteEntry[1] + `.` + actualYear), mapWasteStrings(matchesWasteEntry[2])})
+					collectDate := parseDate(matchesWasteEntry[1] + `.` + actualYear)
+
+					if collectDate.After(ignoreUntilDate) {
+						dates = append(dates, GarageCollection{collectDate, mapWasteStrings(matchesWasteEntry[2])})
+					}
 				}
 			}
 		}
