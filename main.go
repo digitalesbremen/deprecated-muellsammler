@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"time"
@@ -13,12 +14,20 @@ import (
 )
 
 var (
+	c              = client.NewClient()
+	exportFileName = *flag.String("file", defaultExportFile, usage)
+)
+
+const (
 	bremerStadtreinigungRootUrl  = "http://213.168.213.236/bremereb/bify/"
 	bremerStadtreinigungIndexUrl = bremerStadtreinigungRootUrl + "index.jsp"
-	c                            = client.NewClient()
+	defaultExportFile            = "./data.json"
+	usage                        = "the export file location of generated json"
 )
 
 func main() {
+	flag.Parse()
+
 	// Load first letters
 	fmt.Println("Loading street first letters")
 	bar := progressbar.NewProgressBar(1)
@@ -79,9 +88,7 @@ func main() {
 
 	fmt.Println("Write collection dates to file")
 
-	fileName := time.Now().Format("2006-01-02") + ".json"
-
-	repository.Save(repository.Addresses{Addresses: addresses}, fileName)
+	repository.Save(repository.Addresses{Addresses: addresses}, exportFileName)
 
 	fmt.Println("Collection dates written to file")
 }
