@@ -7,8 +7,11 @@ declare -r BINARY_NAME="bremen_trash"
 # GOARCH=amd64    -> because, hmm, everthing works fine with 64 bit :)
 # -a              -> force rebuilding of packages that are already up-to-date.
 # -o gpio-test-x  -> force to build an executable gpio-test-x file (instead of default https://golang.org/cmd/go/#hdr-Compile_packages_and_dependencies)
-echo "Building osx binary '$BINARY_NAME-osx'..."
 
 go test ./...
 
-env CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -a -o $BINARY_NAME
+echo "Building amd64 binary '$BINARY_NAME-amd64'..."
+env CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -a -o $BINARY_NAME-amd64
+
+echo "Building arm binary '$BINARY_NAME-arm'..."
+env CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 go build -a -o $BINARY_NAME-arm
