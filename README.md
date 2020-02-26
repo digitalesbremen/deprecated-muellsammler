@@ -53,7 +53,7 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 
 ### Anforderungen
 
-* Golang 1.13
+* Golang 1.14
 
 ### Project bauen und starten
 

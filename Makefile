@@ -11,7 +11,7 @@ BINARY_AMD64=$(BINARY_NAME)_amd64
 BINARY_ARM=$(BINARY_NAME)_arm
 RASPI_SCP_FOLDER=pi@pi4-rack-0.local:/home/pi/test
 
-all: test build
+all: clean test build
 build:
 	go build -a -o $(BINARY_NAME) -v
 test:
