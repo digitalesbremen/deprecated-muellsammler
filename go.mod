@@ -1,6 +1,6 @@
 module bremen_trash
 
-go 1.13
+go 1.14
 
 require (
 	github.com/schollz/progressbar/v2 v2.15.0
