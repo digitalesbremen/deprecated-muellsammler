@@ -114,15 +114,15 @@ func mapGarbageTypes(garbageTypes []stadtreinigung.WasteType) []string {
 	for _, garbageType := range garbageTypes {
 		switch garbageType {
 		case stadtreinigung.YellowBag:
-			types = append(types, "Gelber Sack")
+			types = append(types, "YELLOW")
 		case stadtreinigung.ResidualWaste:
-			types = append(types, `Restmüll`)
+			types = append(types, `BLACK`)
 		case stadtreinigung.BioWaste:
-			types = append(types, `Bio`)
+			types = append(types, `BROWN`)
 		case stadtreinigung.PaperWaste:
-			types = append(types, `Papier`)
+			types = append(types, `BLUE`)
 		case stadtreinigung.ChristmasTree:
-			types = append(types, `Weihnachtsbaum`)
+			types = append(types, `CHRISTMAS`)
 		}
 	}
 
