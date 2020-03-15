@@ -36,7 +36,3 @@ func TestSave(t *testing.T) {
 
 	Save(data, `../test.json`)
 }
-
-func TestRead(t *testing.T) {
-	// TODO implement me!
-}

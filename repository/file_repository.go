@@ -18,7 +18,6 @@ type JSONTime struct {
 }
 
 func (t JSONTime) MarshalJSON() ([]byte, error) {
-	//do your serializing here
 	stamp := fmt.Sprintf("\"%s\"", t.Format("2006-01-02"))
 	return []byte(stamp), nil
 }
@@ -52,16 +51,4 @@ func Save(data Addresses, fullQualifiedFileName string) {
 	file, _ := json.MarshalIndent(data, "", " ")
 
 	_ = ioutil.WriteFile(fullQualifiedFileName, file, 0644)
-}
-
-func FindAll(fullQualifiedFileName string) Addresses {
-	var addresses Addresses
-
-	readFile, err := ioutil.ReadFile(fullQualifiedFileName)
-
-	if err == nil {
-		_ = json.Unmarshal(readFile, &addresses)
-	}
-
-	return addresses
 }
