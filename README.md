@@ -60,5 +60,5 @@ Backend. Ob zukünftig ein Web- oder App-Client hinzukommt, wird die Zeit zeigen
 ```ssh
 $ git clone https://github.com/larmic/bremen_abfall_kalender
 $ make all
-$ ./bremen_trash
+$ ./muellsammler
 ```

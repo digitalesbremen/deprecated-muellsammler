@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"bremen_trash/html/bremen/stadtreinigung/parser"
+	"muellsammler/html/bremen/stadtreinigung/parser"
 )
 
 func ParseStreetPage(content string, firstLetter parser.Dto, bremerStadtreinigungRootUrl string) []parser.Dto {

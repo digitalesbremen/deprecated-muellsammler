@@ -6,11 +6,11 @@ import (
 	"log"
 	"time"
 
-	"bremen_trash/client"
-	"bremen_trash/html/bremen/stadtreinigung"
-	"bremen_trash/html/bremen/stadtreinigung/parser"
-	"bremen_trash/progressbar"
-	"bremen_trash/repository"
+	"muellsammler/client"
+	"muellsammler/html/bremen/stadtreinigung"
+	"muellsammler/html/bremen/stadtreinigung/parser"
+	"muellsammler/progressbar"
+	"muellsammler/repository"
 )
 
 var (

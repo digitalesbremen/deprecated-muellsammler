@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/text/encoding/charmap"
 
-	"bremen_trash/client/repair"
+	"muellsammler/client/repair"
 )
 
 type Client struct {

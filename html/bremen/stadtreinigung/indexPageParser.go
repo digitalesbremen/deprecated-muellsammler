@@ -3,7 +3,7 @@ package stadtreinigung
 import (
 	"encoding/xml"
 
-	"bremen_trash/html/bremen/stadtreinigung/parser"
+	"muellsammler/html/bremen/stadtreinigung/parser"
 )
 
 func ParseIndexPage(content string, bremerStadtreinigungRootUrl string) []parser.Dto {

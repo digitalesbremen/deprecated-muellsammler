@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"strings"
 
-	"bremen_trash/html/bremen/stadtreinigung/parser"
+	"muellsammler/html/bremen/stadtreinigung/parser"
 )
 
 func ParseHouseNumber(content string, bremerStadtreinigungRootUrl string) []parser.Dto {

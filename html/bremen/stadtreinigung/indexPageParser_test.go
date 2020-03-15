@@ -3,7 +3,7 @@ package stadtreinigung
 import (
 	"testing"
 
-	"bremen_trash/html/bremen/stadtreinigung/parser"
+	"muellsammler/html/bremen/stadtreinigung/parser"
 )
 
 var (

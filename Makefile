@@ -6,7 +6,7 @@
 # -a              -> force rebuilding of packages that are already up-to-date.
 # -o gpio-test-x  -> force to build an executable gpio-test-x file (instead of default https://golang.org/cmd/go/#hdr-Compile_packages_and_dependencies)
 
-BINARY_NAME=bremen_trash
+BINARY_NAME=muellsammler
 BINARY_AMD64=$(BINARY_NAME)_amd64
 BINARY_ARM=$(BINARY_NAME)_arm
 RASPI_SCP_FOLDER=pi@pi4-rack-0.local:/home/pi/test
