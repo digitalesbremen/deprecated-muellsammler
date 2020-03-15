@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"time"
 )
 
@@ -20,16 +19,6 @@ type JSONTime struct {
 func (t JSONTime) MarshalJSON() ([]byte, error) {
 	stamp := fmt.Sprintf("\"%s\"", t.Format("2006-01-02"))
 	return []byte(stamp), nil
-}
-
-func (t *JSONTime) UnmarshalJSON(b []byte) error {
-	s := strings.Trim(string(b), "\"")
-	parsedDate, err := time.Parse("2006-01-02", s)
-	if err != nil {
-		return err
-	}
-	*t = JSONTime{parsedDate}
-	return nil
 }
 
 type Addresses struct {
