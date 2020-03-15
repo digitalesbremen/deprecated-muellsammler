@@ -1,4 +1,4 @@
-module bremen_trash
+module muellsammler
 
 go 1.14
 
