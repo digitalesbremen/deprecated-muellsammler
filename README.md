@@ -27,9 +27,9 @@ der Stadtreinigung und auch auf der eigenen Internetleitung. Einen aktueller Dat
 Das Projekt benötigt eine aktuelle Version von [GO](https://golang.org/) und make. 
 
 ```ssh
-$ git clone https://github.com/larmic/bremen_abfall_kalender    # Auschecken des Repositories
-$ make all                                                      # Bauen einer auf dem Hostsystem laufenden Anwendung
-$ ./muellsammler                                                # Starten der Anwendung
+$ git clone https://github.com/digitalesbremen/bremen_abfall_kalender   # Auschecken des Repositories
+$ make all                                                              # Bauen einer auf dem Hostsystem laufenden Anwendung
+$ ./muellsammler                                                        # Starten der Anwendung
 ```
 
 ### Weitere make goals
