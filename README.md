@@ -8,7 +8,7 @@ Ein in [GO](https://golang.org/) entwickeltes Programm, welches die von der
 Bremer Adressen durchsucht und regelmäßig eine entsprechende Datei im JSON Format bereitstellt. 
 
 Die genauen Hintergründe für diese Anwendung ist auf [Digitales Bremen](https://digitalesbremen.github.io/) beschrieben. 
-Für diese Anwendung gibt es eine genauere Beschreibung im [Blog](blog.md).
+Für diese Anwendung gibt es eine genauere Beschreibung im [Blog](https://github.com/digitalesbremen/digitalesbremen.github.io/blob/master/blog.md).
 
 ## Hinweis
 
