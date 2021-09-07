@@ -3,6 +3,8 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.org/digitalesbremen/muellsammler.svg?branch=master)](https://travis-ci.org/digitalesbremen/muellsammler)
 
+DEPRECATED: Die API des Müllkalenders wurde komplett umgeschrieben.
+
 Ein in [GO](https://golang.org/) entwickeltes Programm, welches die von der 
 [Bremer Stadtreinigung](https://www.die-bremer-stadtreinigung.de/) bereitgestellten Webseite nach allen Abholdaten aller
 Bremer Adressen durchsucht und regelmäßig eine entsprechende Datei im JSON Format bereitstellt. 
